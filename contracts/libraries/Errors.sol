@@ -58,7 +58,7 @@ library Errors {
     //////////////////////////////////////////////////////////////*/
 
     error EMPTY_MODULE_ADDRESS(); // 0x912fe2f2
-    error RECUSIVE_MODULE_CALL(); // 0x2cf7b9c8
+    error RECURSIVE_MODULE_CALL(); // 0x2cf7b9c8
     error MODULE_ERC165_FAIL(); // 0xc1ad2a50
 
     /*//////////////////////////////////////////////////////////////

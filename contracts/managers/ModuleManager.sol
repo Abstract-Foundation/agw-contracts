@@ -43,7 +43,7 @@ abstract contract ModuleManager is IModuleManager, Auth {
         uint256 value,
         bytes memory data
     ) external override onlyModule {
-        if (to == address(this)) revert Errors.RECUSIVE_MODULE_CALL();
+        if (to == address(this)) revert Errors.RECURSIVE_MODULE_CALL();
 
         assembly {
             let result := call(gas(), to, value, add(data, 0x20), mload(data), 0, 0)

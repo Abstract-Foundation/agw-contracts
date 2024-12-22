@@ -28,7 +28,7 @@
   { "inputs": [], "name": "NOT_FROM_MODULE", "type": "error" },
   { "inputs": [], "name": "NOT_FROM_SELF", "type": "error" },
   { "inputs": [], "name": "NOT_FROM_SELF_OR_MODULE", "type": "error" },
-  { "inputs": [], "name": "RECUSIVE_MODULE_CALL", "type": "error" },
+  { "inputs": [], "name": "RECURSIVE_MODULE_CALL", "type": "error" },
   { "inputs": [], "name": "SAME_IMPLEMENTATION", "type": "error" },
   {
     "inputs": [{ "internalType": "string", "name": "str", "type": "string" }],
