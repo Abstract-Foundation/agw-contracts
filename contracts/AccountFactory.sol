@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import {DEPLOYER_SYSTEM_CONTRACT, IContractDeployer} from '@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol';
 import {SystemContractsCaller} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractsCaller.sol';
 import {Ownable, Ownable2Step} from '@openzeppelin/contracts/access/Ownable2Step.sol';
-
+import {EfficientCall} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol';
 import {Errors} from './libraries/Errors.sol';
 import {IAGWRegistry} from './interfaces/IAGWRegistry.sol';
 
@@ -91,7 +91,7 @@ contract AccountFactory is Ownable2Step {
      */
     function deployAccount(
         bytes32 salt,
-        bytes memory initializer
+        bytes calldata initializer
     ) external payable returns (address accountAddress) {
         // Check that the initializer is not empty
         if (initializer.length < 4) {
@@ -99,10 +99,7 @@ contract AccountFactory is Ownable2Step {
         }
         // Check that the initializer selector is correct
         {
-            bytes4 selector;
-            assembly ('memory-safe') {
-                selector := mload(add(initializer, 0x20))
-            }
+            bytes4 selector = bytes4(initializer[0:4]);
             if (selector != initializerSelector) {
                 revert Errors.INVALID_INITIALIZER();
             }
@@ -132,24 +129,8 @@ contract AccountFactory is Ownable2Step {
         // Store the deployer of the account
         accountToDeployer[accountAddress] = msg.sender;
         
-        // Initialize the account
-        bool initializeSuccess;
-
-        assembly ('memory-safe') {
-            initializeSuccess := call(
-                gas(),
-                accountAddress,
-                callvalue(),
-                add(initializer, 0x20),
-                mload(initializer),
-                0,
-                0
-            )
-        }
-
-        if (!initializeSuccess) {
-            revert Errors.INITIALIZATION_FAILED();
-        }
+        // This propagates the revert if the initialization fails
+        EfficientCall.call(gasleft(), accountAddress, msg.value, initializer, false);
 
         IAGWRegistry(registry).register(accountAddress);
 
