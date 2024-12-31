@@ -16,7 +16,8 @@ library SessionLib {
   enum Status {
     NotInitialized,
     Active,
-    Closed
+    Closed,
+    Expired
   }
 
   // This struct is used to track usage information for each session.
@@ -25,6 +26,7 @@ library SessionLib {
   // Storage layout of this struct is weird to conform to ERC-7562 storage access restrictions during validation.
   // Each innermost mapping is always mapping(address account => ...).
   struct SessionStorage {
+    uint256 expiresAt;
     mapping(address => Status) status;
     UsageTracker fee;
     // (target) => transfer value tracker
@@ -110,6 +112,7 @@ library SessionLib {
 
   // Info about remaining session limits and its status
   struct SessionState {
+    uint256 expiresAt;
     Status status;
     uint256 feesRemaining;
     LimitState[] transferValue;
@@ -331,7 +334,8 @@ library SessionLib {
 
     return
       SessionState({
-        status: session.status[account],
+        expiresAt: session.expiresAt,
+        status: block.timestamp > session.expiresAt ? Status.Expired : session.status[account],
         feesRemaining: remainingLimit(spec.feeLimit, session.fee, account),
         transferValue: transferValue,
         callValue: callValue,

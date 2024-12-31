@@ -36,6 +36,9 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
   }
 
   function sessionStatus(address account, bytes32 sessionHash) external view returns (SessionLib.Status) {
+    if (block.timestamp > sessions[sessionHash].expiresAt) {
+      return SessionLib.Status.Expired;
+    }
     return sessions[sessionHash].status[account];
   }
 
@@ -67,6 +70,7 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
     require(sessionSpec.feeLimit.limitType != SessionLib.LimitType.Unlimited, "Unlimited fee allowance is not safe");
     sessionCounter[msg.sender]++;
     sessions[sessionHash].status[msg.sender] = SessionLib.Status.Active;
+    sessions[sessionHash].expiresAt = sessionSpec.expiresAt;
     emit SessionCreated(msg.sender, sessionHash, sessionSpec);
   }
 
