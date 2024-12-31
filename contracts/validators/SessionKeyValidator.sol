@@ -73,6 +73,11 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
   function init(bytes calldata data) external {
     // to prevent recursion, since addHook also calls init
     if (!_isInitialized(msg.sender)) {
+      // Ensure that all keys are revoked before installing the module again.
+      // This is to prevent the module from being installed, used and installed
+      // again later with dormant keys that could be used to execute transactions.
+      require(sessionCounter[msg.sender] == 0, "Revoke all keys first");
+
       IHookManager(msg.sender).addHook(abi.encodePacked(address(this)), true);
       IValidatorManager(msg.sender).addModuleValidator(address(this), data);
     }
@@ -80,11 +85,6 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
 
   function disable() external {
     if (_isInitialized(msg.sender)) {
-      // Here we have to revoke all keys, so that if the module
-      // is installed again later, there will be no active sessions from the past.
-      // Problem: if there are too many keys, this will run out of gas.
-      // Solution: before uninstalling, require that all keys are revoked manually.
-      require(sessionCounter[msg.sender] == 0, "Revoke all keys first");
       IValidatorManager(msg.sender).removeModuleValidator(address(this));
       IHookManager(msg.sender).removeHook(address(this), true);
     }
