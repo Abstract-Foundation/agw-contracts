@@ -179,7 +179,7 @@ library SessionLib {
     // most of the computation needed to validate the session.
 
     // TODO: update fee allowance with the gasleft/refund at the end of execution
-    if (transaction.paymaster != 0) {
+    if (transaction.paymaster == 0) {
       // If a paymaster is paying the fee, we don't need to check the fee limit
       uint256 fee = transaction.maxFeePerGas * transaction.gasLimit;
       spec.feeLimit.checkAndUpdate(state.fee, fee, periodId);
