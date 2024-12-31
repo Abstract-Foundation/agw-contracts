@@ -84,7 +84,6 @@ abstract contract ModuleManager is IModuleManager, Auth {
     }
 
     function _removeModule(address module) internal {
-        _modulesLinkedList().remove(module);
 
         (bool success, ) = module.excessivelySafeCall(
             gasleft(),
@@ -93,6 +92,8 @@ abstract contract ModuleManager is IModuleManager, Auth {
             abi.encodeWithSelector(IInitable.disable.selector)
         );
         (success); // silence unused local variable warning
+
+        _modulesLinkedList().remove(module);
 
         emit RemoveModule(module);
     }
