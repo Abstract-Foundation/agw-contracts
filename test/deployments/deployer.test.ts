@@ -105,7 +105,7 @@ describe('AGW Contracts - Deployer class tests', () => {
         it('should not deploy an account with an invalid salt', async () => {
             const salt = randomBytes(32);
             await expect(deployer.account(wallet, factory, eoaValidator, { salt: hexlify(salt) }))
-                .to.be.revertedWithCustomError(factory, "INITIALIZATION_FAILED");
+                .to.be.revertedWithCustomError(account, "INVALID_SALT");
         });
 
         it('should not deploy an account with an empty initializer', async () => {
