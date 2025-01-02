@@ -4,6 +4,7 @@
  * Proprietary and confidential
  */
 import {
+    keccak256,
     ZeroAddress,
     zeroPadValue
 } from 'ethers';
@@ -27,19 +28,11 @@ export default async function (): Promise<void> {
 
     const initialOwner = fundingWallet.address;
 
-     await deployContract(hre, 'BatchCaller', undefined, {
-        wallet: fundingWallet,
-        silent: false,
-    }, 'create');
-
-    eoaValidator = await deployContract(hre, 'EOAValidator', undefined, {
-        wallet: fundingWallet,
-        silent: false,
-    }, 'create2');
+    const eoaValidatorAddress = "0x1af85E1C3501B66987689A5684bE20da2443fB44";
 
     implementation = await deployContract(
         hre,
-        'ClaveImplementation',
+        'AGWAccount',
         [await eoaValidator.getAddress()],
         {
             wallet: fundingWallet,
@@ -48,7 +41,7 @@ export default async function (): Promise<void> {
         'create2',
     );
 
-    registry = await deployContract(hre, 'ClaveRegistry',
+    registry = await deployContract(hre, 'AGWRegistry',
         [
             initialOwner,
         ], {
@@ -59,19 +52,20 @@ export default async function (): Promise<void> {
     // Need this so the ClaveProxy artifact is valid
     await deployContract(
         hre,
-        'ClaveProxy',
+        'AccountProxy',
         [await implementation.getAddress()],
         { wallet: fundingWallet, silent: true, noVerify: true },
         'create2',
     );
 
-    const accountProxyArtifact = await hre.zksyncEthers.loadArtifact('ClaveProxy');
+    const accountProxyArtifact = await hre.zksyncEthers.loadArtifact('AccountProxy');
     const bytecodeHash = utils.hashBytecode(accountProxyArtifact.bytecode);
     factory = await deployContract(
         hre,
         'AccountFactory',
         [
             await implementation.getAddress(),
+            "0xb4e581f5",
             await registry.getAddress(),
             bytecodeHash,
             fundingWallet.address,
@@ -93,7 +87,7 @@ export default async function (): Promise<void> {
         callData: '0x',
     };
 
-    const salt = initialOwner.padEnd(66, '0');
+    const salt = keccak256(initialOwner.padEnd(66, '0'));
     console.log("salt", salt);
     const initializer =
         '0xb4e581f5' +
@@ -107,7 +101,7 @@ export default async function (): Promise<void> {
                 ],
                 [
                     initialOwner,
-                    await eoaValidator.getAddress(),
+                    eoaValidatorAddress,
                     [],
                     [call.target, call.allowFailure, call.value, call.callData],
                 ],
@@ -121,7 +115,7 @@ export default async function (): Promise<void> {
 
     await verifyContract(hre, {
         address: accountAddress,
-        contract: "contracts/ClaveProxy.sol:ClaveProxy",
+        contract: "contracts/AccountProxy.sol:AccountProxy",
         constructorArguments: zeroPadValue(accountAddress, 32),
         bytecode: accountProxyArtifact.bytecode
     })
