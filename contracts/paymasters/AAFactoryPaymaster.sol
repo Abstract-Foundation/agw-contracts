@@ -50,10 +50,7 @@ contract AAFactoryPaymaster is IPaymaster {
         }
 
         if (address(uint160(_transaction.from)) != AccountFactory(AA_FACTORY).deployer()) {
-            (bytes32 salt, bytes memory initializer) = abi.decode(_transaction.data[4:], (bytes32, bytes));
-            if (keccak256(abi.encodePacked(address(uint160(_transaction.from)))) != salt) {
-                revert InvalidDeployer();
-            }
+            revert InvalidDeployer();
         }
 
         context = "";
