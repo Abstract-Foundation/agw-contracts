@@ -7,7 +7,7 @@ import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol
 import { IModule } from "../interfaces/IModule.sol";
 import { IValidationHook } from "../interfaces/IHook.sol";
 import { IModuleValidator } from "../interfaces/IModuleValidator.sol";
-
+import { OperationType } from "../interfaces/IValidator.sol";
 import { Transaction } from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
@@ -42,7 +42,10 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
     return sessions[sessionHash].status[account];
   }
 
-  function handleValidation(bytes32 signedHash, bytes memory signature) external view returns (bool) {
+  function handleValidation(OperationType operationType, bytes32 signedHash, bytes memory signature) external view returns (bool) {
+    if (operationType != OperationType.Transaction) {
+      return false;
+    }
     // This only succeeds if the validationHook has previously succeeded for this hash.
     uint256 slot = uint256(signedHash);
     uint256 hookResult;

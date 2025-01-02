@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {IK1Validator, IERC165} from '../interfaces/IValidator.sol';
+import {IK1Validator, IERC165, OperationType} from '../interfaces/IValidator.sol';
 import {ECDSA} from '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
-
 /**
  * @title secp256k1 ec keys' signature validator contract implementing its interface
  * @author https://getclave.io
@@ -14,6 +13,7 @@ contract EOAValidator is IK1Validator {
 
     /// @inheritdoc IK1Validator
     function validateSignature(
+        OperationType operationType,
         bytes32 signedHash,
         bytes calldata signature
     ) external pure override returns (address signer) {

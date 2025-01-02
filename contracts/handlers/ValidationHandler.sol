@@ -8,6 +8,7 @@ import {ValidatorManager} from '../managers/ValidatorManager.sol';
 
 import {IK1Validator, IR1Validator} from '../interfaces/IValidator.sol';
 import {IModuleValidator} from '../interfaces/IModuleValidator.sol';
+import {OperationType} from '../interfaces/IValidator.sol';
 
 /**
  * @title ValidationHandler
@@ -17,6 +18,7 @@ import {IModuleValidator} from '../interfaces/IModuleValidator.sol';
 abstract contract ValidationHandler is OwnerManager, ValidatorManager {
     function _handleValidation(
         address validator,
+        OperationType operationType,
         bytes32 signedHash,
         bytes memory signature
     ) internal view returns (bool) {
@@ -31,6 +33,7 @@ abstract contract ValidationHandler is OwnerManager, ValidatorManager {
                 bytes32[2] memory pubKey = abi.decode(cursor, (bytes32[2]));
 
                 bool _success = IR1Validator(validator).validateSignature(
+                    operationType,
                     signedHash,
                     signature,
                     pubKey
@@ -44,6 +47,7 @@ abstract contract ValidationHandler is OwnerManager, ValidatorManager {
             }
         } else if (_k1IsValidator(validator)) {
             address recoveredAddress = IK1Validator(validator).validateSignature(
+                operationType,
                 signedHash,
                 signature
             );
@@ -55,8 +59,8 @@ abstract contract ValidationHandler is OwnerManager, ValidatorManager {
             if (OwnerManager._k1IsOwner(recoveredAddress)) {
                 return true;
             }
-        } else if (_isModuleValidator(validator)) {
-            return IModuleValidator(validator).handleValidation(signedHash, signature);
+        } else if ( _isModuleValidator(validator)) {
+            return IModuleValidator(validator).handleValidation(operationType, signedHash, signature);
         }
 
         return false;
