@@ -333,10 +333,17 @@ library SessionLib {
       mstore(callParams, paramLimitIndex)
     }
 
+    Status status = session.status[account];
+    if (status == Status.Active) {
+      if (block.timestamp > session.expiresAt) {
+        status = Status.Expired;
+      }
+    }
+
     return
       SessionState({
         expiresAt: session.expiresAt,
-        status: block.timestamp > session.expiresAt ? Status.Expired : session.status[account],
+        status: status,
         feesRemaining: remainingLimit(spec.feeLimit, session.fee, account),
         transferValue: transferValue,
         callValue: callValue,

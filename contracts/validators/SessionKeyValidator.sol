@@ -36,10 +36,13 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
   }
 
   function sessionStatus(address account, bytes32 sessionHash) external view returns (SessionLib.Status) {
-    if (block.timestamp > sessions[sessionHash].expiresAt) {
-      return SessionLib.Status.Expired;
+    SessionLib.Status status = sessions[sessionHash].status[account];
+    if (status == SessionLib.Status.Active) {
+      if (block.timestamp > sessions[sessionHash].expiresAt) {
+        return SessionLib.Status.Expired;
+      }
     }
-    return sessions[sessionHash].status[account];
+    return status;
   }
 
   function handleValidation(OperationType operationType, bytes32 signedHash, bytes memory signature) external view returns (bool) {
