@@ -6,6 +6,7 @@ import {IERC1271} from '@openzeppelin/contracts/interfaces/IERC1271.sol';
 import {SignatureDecoder} from '../libraries/SignatureDecoder.sol';
 import {ValidationHandler} from './ValidationHandler.sol';
 import {EIP712Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol';
+import {OperationType} from '../interfaces/IValidator.sol';
 
 /**
  * @title ERC1271Handler
@@ -47,7 +48,7 @@ abstract contract ERC1271Handler is
 
         bytes32 eip712Hash = _hashTypedDataV4(_agwMessageHash(AGWMessage(signedHash)));
 
-        bool valid = _handleValidation(validator, eip712Hash, signature);
+        bool valid = _handleValidation(validator, OperationType.Signature, eip712Hash, signature);
 
         magicValue = valid ? _ERC1271_MAGIC : bytes4(0);
     }

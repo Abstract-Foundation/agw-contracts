@@ -3,6 +3,11 @@ pragma solidity ^0.8.17;
 
 import {IERC165} from '@openzeppelin/contracts/utils/introspection/IERC165.sol';
 
+enum OperationType {
+    Signature,
+    Transaction
+}
+
 /**
  * @title secp256r1 ec keys' signature validator interface
  * @author https://getclave.io
@@ -16,6 +21,7 @@ interface IR1Validator is IERC165 {
      * @return valid bool                 - validation result
      */
     function validateSignature(
+        OperationType operationType,
         bytes32 signedHash,
         bytes calldata signature,
         bytes32[2] calldata pubKey
@@ -34,6 +40,7 @@ interface IK1Validator is IERC165 {
      * @return signer address             - recovered signer address
      */
     function validateSignature(
+        OperationType operationType,
         bytes32 signedHash,
         bytes calldata signature
     ) external view returns (address signer);

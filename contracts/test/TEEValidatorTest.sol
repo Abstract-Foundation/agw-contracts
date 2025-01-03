@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {IR1Validator, IERC165} from '../interfaces/IValidator.sol';
+import {IR1Validator, IERC165, OperationType} from '../interfaces/IValidator.sol';
 import {Errors} from '../libraries/Errors.sol';
 import {VerifierCaller} from '../helpers/VerifierCaller.sol';
 
@@ -23,6 +23,7 @@ contract TEEValidatorTest is IR1Validator, VerifierCaller {
 
     /// @inheritdoc IR1Validator
     function validateSignature(
+        OperationType, // unused
         bytes32 signedHash,
         bytes calldata signature,
         bytes32[2] calldata pubKey

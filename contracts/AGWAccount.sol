@@ -23,6 +23,7 @@ import {ERC1271Handler} from './handlers/ERC1271Handler.sol';
 import {Call} from './batch/BatchCaller.sol';
 
 import {IAGWAccount} from './interfaces/IAGWAccount.sol';
+import {OperationType} from './interfaces/IValidator.sol';
 import {AccountFactory} from './AccountFactory.sol';
 import {BatchCaller} from './batch/BatchCaller.sol';
 
@@ -272,7 +273,7 @@ contract AGWAccount is
         bool hookSuccess = runValidationHooks(signedHash, transaction, hookData);
 
         // Handle validation
-        bool valid = _handleValidation(validator, signedHash, signature);
+        bool valid = _handleValidation(validator, OperationType.Transaction, signedHash, signature);
 
         magicValue = (hookSuccess && valid) ? ACCOUNT_VALIDATION_SUCCESS_MAGIC : bytes4(0);
     }
