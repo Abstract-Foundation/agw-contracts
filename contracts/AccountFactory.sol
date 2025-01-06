@@ -15,20 +15,42 @@ import {IAGWRegistry} from './interfaces/IAGWRegistry.sol';
  * @author https://getclave.io
  */
 contract AccountFactory is Ownable2Step {
-    // Address of the account implementation 
+    
+    /**
+     * @notice Address of the account implementation
+     */
     address public implementationAddress;
-    // Selector of the account initializer function
+    /**
+     * @notice Allowed selector for account initialization
+     */
     bytes4 public initializerSelector;
 
-    // Account registry contract address
+    /**
+     * @notice Account registry contract address
+     */
     address public registry;
 
-    // Account creation bytecode hash
+    /**
+     * @notice Account creation bytecode hash
+     */
     bytes32 public proxyBytecodeHash;
-    // Account authorized to deploy AGW accounts
-    address public deployer;
-    // Mapping to store the deployer of each account
-    mapping (address => address) public accountToDeployer;
+    
+    /**
+     * @notice Authorized deployers of AGW accounts
+     */
+    mapping (address deployer => bool authorized) public authorizedDeployers;
+    
+    /**
+     * @notice Tracks the initial deployer of each account
+     */
+    mapping (address account => address deployer) public accountToDeployer;
+    
+    /**
+     * @notice Account address deployed for a given salt the same account
+     * @dev This is used to override the deterministic account address if the account is already deployed
+     *      and the initial implementation has been changed
+     */
+    mapping (bytes32 salt => address accountAddress) public saltToAccount;
 
     /**
      * @notice Event emmited when a new AGW account is created
@@ -43,10 +65,11 @@ contract AccountFactory is Ownable2Step {
     event AGWAccountDeployed(address indexed accountAddress);
 
     /**
-     * @notice Event emmited when the deployer account is changed
-     * @param newDeployer Address of the new deployer account
+     * @notice Event emmited when a deployer account is authorized
+     * @param deployer Address of the deployer account
+     * @param authorized Whether the deployer is authorized to deploy AGW accounts
      */
-    event DeployerChanged(address indexed newDeployer);
+    event DeployerAuthorized(address indexed deployer, bool indexed authorized);
 
     /**
      * @notice Event emmited when the implementation contract is changed
@@ -76,10 +99,12 @@ contract AccountFactory is Ownable2Step {
         address _owner
     ) Ownable(_owner) {
         implementationAddress = _implementation;
+        emit ImplementationChanged(_implementation);
         initializerSelector = _initializerSelector;
         registry = _registry;
         proxyBytecodeHash = _proxyBytecodeHash;
-        deployer = _deployer;
+        authorizedDeployers[_deployer] = true;
+        emit DeployerAuthorized(_deployer, true);
     }
 
     /**
@@ -128,6 +153,7 @@ contract AccountFactory is Ownable2Step {
         (accountAddress) = abi.decode(returnData, (address));
         // Store the deployer of the account
         accountToDeployer[accountAddress] = msg.sender;
+        saltToAccount[salt] = accountAddress;
         
         // This propagates the revert if the initialization fails
         EfficientCall.call(gasleft(), accountAddress, msg.value, initializer, false);
@@ -143,20 +169,21 @@ contract AccountFactory is Ownable2Step {
      * @param accountAddress address - Address of the AGW account that was created
      */
     function agwAccountCreated(address accountAddress) external {
-        if (msg.sender != deployer) {
+        if (!authorizedDeployers[msg.sender]) {
             revert Errors.NOT_FROM_DEPLOYER();
         }
         emit AGWAccountCreated(accountAddress);
     }
 
     /**
-     * @notice Changes the account authorized to deploy AGW accounts
-     * @param newDeployer address - Address of the new account authorized to deploy AGW accounts
+     * @notice Sets authorization to deploy AGW accounts
+     * @param deployer address - Address of the new account authorized to deploy AGW accounts
+     * @param authorized bool - Whether the new deployer is authorized to deploy AGW accounts
      */
-    function changeDeployer(address newDeployer) external onlyOwner {
-        deployer = newDeployer;
+    function setDeployer(address deployer, bool authorized) external onlyOwner {
+        authorizedDeployers[deployer] = authorized;
 
-        emit DeployerChanged(newDeployer);
+        emit DeployerAuthorized(deployer, authorized);
     }
 
     /**
@@ -182,16 +209,22 @@ contract AccountFactory is Ownable2Step {
 
     /**
      * @notice Returns the address of the AGW account that would be created with the given salt
+     * @dev If the account already exists, it returns the existing account address
      * @param salt bytes32 - Salt to be used for the account creation
      * @return accountAddress address - Address of the AGW account that would be created with the given salt
      */
     function getAddressForSalt(bytes32 salt) external view returns (address accountAddress) {
-        accountAddress = IContractDeployer(DEPLOYER_SYSTEM_CONTRACT).getNewAddressCreate2(
-            address(this),
-            proxyBytecodeHash,
-            salt,
-            abi.encode(implementationAddress)
-        );
+        // Check if the account is already deployed
+        accountAddress = saltToAccount[salt];
+        if (accountAddress == address(0)) {
+            // If not, get the deterministic account address for the current implementation
+            accountAddress = IContractDeployer(DEPLOYER_SYSTEM_CONTRACT).getNewAddressCreate2(
+                address(this),
+                proxyBytecodeHash,
+                salt,
+                abi.encode(implementationAddress)
+            );
+        }
     }
 
     /**

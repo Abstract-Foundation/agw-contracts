@@ -49,7 +49,7 @@ contract AAFactoryPaymaster is IPaymaster {
             revert MustCallCreateAccount();
         }
 
-        if (address(uint160(_transaction.from)) != AccountFactory(AA_FACTORY).deployer()) {
+        if (!AccountFactory(AA_FACTORY).authorizedDeployers(address(uint160(_transaction.from)))) {
             revert InvalidDeployer();
         }
 
@@ -79,7 +79,9 @@ contract AAFactoryPaymaster is IPaymaster {
         }
 
         (bool success,) = _deployer.call{value: address(this).balance}("");
-        revert WithdrawalFailed();
+        if (!success) {
+            revert WithdrawalFailed();
+        }
     }
 
     receive() external payable {}

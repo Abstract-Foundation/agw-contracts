@@ -85,7 +85,7 @@ contract AGWAccount is
         _k1AddOwner(initialK1Owner);
 
         address thisDeployer = factory.accountToDeployer(address(this));
-        if (thisDeployer != factory.deployer()) {
+        if (!factory.authorizedDeployers(thisDeployer)) {
             if (initialK1Owner != thisDeployer) {
                 // disregard any modules and initial call as the deployer is untrusted
                 _k1AddValidator(KNOWN_TRUSTED_EOA_VALIDATOR);
