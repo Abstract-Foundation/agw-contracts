@@ -214,16 +214,17 @@ contract AccountFactory is Ownable2Step {
      * @return accountAddress address - Address of the AGW account that would be created with the given salt
      */
     function getAddressForSalt(bytes32 salt) external view returns (address accountAddress) {
-        address existingAccount = saltToAccount[salt];
-        if (existingAccount != address(0)) {
-            return accountAddress;
+        // Check if the account is already deployed
+        accountAddress = saltToAccount[salt];
+        if (accountAddress == address(0)) {
+            // If not, get the deterministic account address for the current implementation
+            accountAddress = IContractDeployer(DEPLOYER_SYSTEM_CONTRACT).getNewAddressCreate2(
+                address(this),
+                proxyBytecodeHash,
+                salt,
+                abi.encode(implementationAddress)
+            );
         }
-        return IContractDeployer(DEPLOYER_SYSTEM_CONTRACT).getNewAddressCreate2(
-            address(this),
-            proxyBytecodeHash,
-            salt,
-            abi.encode(implementationAddress)
-        );
     }
 
     /**
