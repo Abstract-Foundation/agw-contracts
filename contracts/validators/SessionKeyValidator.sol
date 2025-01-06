@@ -55,7 +55,7 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
     assembly {
       hookResult := tload(slot)
     }
-    require(hookResult == 1, "Can't call this function without calling validationHook");
+    require(hookResult == 1, "Session key validation failed. Please check session status and limits.");
     return true;
   }
 
