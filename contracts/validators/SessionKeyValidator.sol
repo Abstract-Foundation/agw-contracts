@@ -7,7 +7,7 @@ import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol
 import { IModule } from "../interfaces/IModule.sol";
 import { IValidationHook } from "../interfaces/IHook.sol";
 import { IModuleValidator } from "../interfaces/IModuleValidator.sol";
-
+import { OperationType } from "../interfaces/IValidator.sol";
 import { Transaction } from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
@@ -36,10 +36,19 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
   }
 
   function sessionStatus(address account, bytes32 sessionHash) external view returns (SessionLib.Status) {
-    return sessions[sessionHash].status[account];
+    SessionLib.Status status = sessions[sessionHash].status[account];
+    if (status == SessionLib.Status.Active) {
+      if (block.timestamp > sessions[sessionHash].expiresAt) {
+        return SessionLib.Status.Expired;
+      }
+    }
+    return status;
   }
 
-  function handleValidation(bytes32 signedHash, bytes memory signature) external view returns (bool) {
+  function handleValidation(OperationType operationType, bytes32 signedHash, bytes memory signature) external view returns (bool) {
+    if (operationType != OperationType.Transaction) {
+      return false;
+    }
     // This only succeeds if the validationHook has previously succeeded for this hash.
     uint256 slot = uint256(signedHash);
     uint256 hookResult;
@@ -67,12 +76,18 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
     require(sessionSpec.feeLimit.limitType != SessionLib.LimitType.Unlimited, "Unlimited fee allowance is not safe");
     sessionCounter[msg.sender]++;
     sessions[sessionHash].status[msg.sender] = SessionLib.Status.Active;
+    sessions[sessionHash].expiresAt = sessionSpec.expiresAt;
     emit SessionCreated(msg.sender, sessionHash, sessionSpec);
   }
 
   function init(bytes calldata data) external {
     // to prevent recursion, since addHook also calls init
     if (!_isInitialized(msg.sender)) {
+      // Ensure that all keys are revoked before installing the module again.
+      // This is to prevent the module from being installed, used and installed
+      // again later with dormant keys that could be used to execute transactions.
+      require(sessionCounter[msg.sender] == 0, "Revoke all keys first");
+
       IHookManager(msg.sender).addHook(abi.encodePacked(address(this)), true);
       IValidatorManager(msg.sender).addModuleValidator(address(this), data);
     }
@@ -80,11 +95,6 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
 
   function disable() external {
     if (_isInitialized(msg.sender)) {
-      // Here we have to revoke all keys, so that if the module
-      // is installed again later, there will be no active sessions from the past.
-      // Problem: if there are too many keys, this will run out of gas.
-      // Solution: before uninstalling, require that all keys are revoked manually.
-      require(sessionCounter[msg.sender] == 0, "Revoke all keys first");
       IValidatorManager(msg.sender).removeModuleValidator(address(this));
       IHookManager(msg.sender).removeHook(address(this), true);
     }

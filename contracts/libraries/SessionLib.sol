@@ -16,7 +16,8 @@ library SessionLib {
   enum Status {
     NotInitialized,
     Active,
-    Closed
+    Closed,
+    Expired
   }
 
   // This struct is used to track usage information for each session.
@@ -25,6 +26,7 @@ library SessionLib {
   // Storage layout of this struct is weird to conform to ERC-7562 storage access restrictions during validation.
   // Each innermost mapping is always mapping(address account => ...).
   struct SessionStorage {
+    uint256 expiresAt;
     mapping(address => Status) status;
     UsageTracker fee;
     // (target) => transfer value tracker
@@ -110,6 +112,7 @@ library SessionLib {
 
   // Info about remaining session limits and its status
   struct SessionState {
+    uint256 expiresAt;
     Status status;
     uint256 feesRemaining;
     LimitState[] transferValue;
@@ -179,7 +182,7 @@ library SessionLib {
     // most of the computation needed to validate the session.
 
     // TODO: update fee allowance with the gasleft/refund at the end of execution
-    if (transaction.paymaster != 0) {
+    if (transaction.paymaster == 0) {
       // If a paymaster is paying the fee, we don't need to check the fee limit
       uint256 fee = transaction.maxFeePerGas * transaction.gasLimit;
       spec.feeLimit.checkAndUpdate(state.fee, fee, periodId);
@@ -217,6 +220,7 @@ library SessionLib {
       // Disallow self-targeting transactions with session keys as these have the ability to administer
       // the smart account.
       require(address(uint160(transaction.to)) != msg.sender, "Can not target self");
+      require(address(uint160(transaction.to)) != address(this), "Can not manage session keys");
 
       bytes4 selector = bytes4(transaction.data[:4]);
       CallSpec memory callPolicy;
@@ -329,9 +333,17 @@ library SessionLib {
       mstore(callParams, paramLimitIndex)
     }
 
+    Status status = session.status[account];
+    if (status == Status.Active) {
+      if (block.timestamp > session.expiresAt) {
+        status = Status.Expired;
+      }
+    }
+
     return
       SessionState({
-        status: session.status[account],
+        expiresAt: session.expiresAt,
+        status: status,
         feesRemaining: remainingLimit(spec.feeLimit, session.fee, account),
         transferValue: transferValue,
         callValue: callValue,

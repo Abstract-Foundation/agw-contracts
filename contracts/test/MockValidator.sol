@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {IR1Validator, IERC165} from '../interfaces/IValidator.sol';
+import {IR1Validator, IERC165, OperationType} from '../interfaces/IValidator.sol';
 import {Transaction} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol';
 
 /**
@@ -10,6 +10,7 @@ import {Transaction} from '@matterlabs/zksync-contracts/l2/system-contracts/libr
  */
 contract MockValidator is IR1Validator {
     function validateSignature(
+        OperationType, // unused
         bytes32,
         bytes calldata,
         bytes32[2] calldata
