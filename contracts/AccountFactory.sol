@@ -118,6 +118,9 @@ contract AccountFactory is Ownable2Step {
         bytes32 salt,
         bytes calldata initializer
     ) external payable returns (address accountAddress) {
+        if (saltToAccount[salt] != address(0)) {
+            revert Errors.ALREADY_CREATED();
+        }
         // Check that the initializer is not empty
         if (initializer.length < 4) {
             revert Errors.INVALID_INITIALIZER();
