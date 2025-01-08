@@ -6,7 +6,7 @@
 import { expect } from 'chai';
 import type { ec } from 'elliptic';
 import type { BytesLike, HDNodeWallet } from 'ethers';
-import { getAddress, hexlify, parseEther, randomBytes } from 'ethers';
+import { getAddress, hexlify, keccak256, parseEther, randomBytes } from 'ethers';
 import * as hre from 'hardhat';
 import type { Contract, Wallet } from 'zksync-ethers';
 import { Provider } from 'zksync-ethers';
@@ -109,12 +109,22 @@ describe('AGW Contracts - Deployer class tests', () => {
         });
 
         it('should not deploy an account with an empty initializer', async () => {
-            await expect(deployer.account(wallet, factory, eoaValidator, { initializer: '0x' }))
+            const pk = randomBytes(32);
+            const wallet = getWallet(hre, hexlify(pk));
+            await expect(deployer.account(wallet, factory, eoaValidator, { 
+                salt: keccak256(wallet.address),
+                initializer: '0x' 
+            }))
             .to.be.revertedWithCustomError(factory, "INVALID_INITIALIZER");
         });
 
         it('should not deploy an account with an invalid initializer selector', async () => {
-            await expect(deployer.account(wallet, factory, eoaValidator, { initializer: '0xabababab' }))
+            const pk = randomBytes(32);
+            const wallet = getWallet(hre, hexlify(pk));
+            await expect(deployer.account(wallet, factory, eoaValidator, { 
+                salt: keccak256(wallet.address), 
+                initializer: '0xabababab' 
+            }))
             .to.be.revertedWithCustomError(factory, "INVALID_INITIALIZER");
         });
 
