@@ -38,7 +38,7 @@ abstract contract VerifierCaller {
             return returnValue == 1;
         }
 
-        // Otherwise return false for the unsucessful calls and invalid signatures
+        // Otherwise return false for the unsuccessful calls and invalid signatures
         return false;
     }
 }
