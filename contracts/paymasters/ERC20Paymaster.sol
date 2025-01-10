@@ -85,7 +85,7 @@ contract ERC20Paymaster is IPaymaster, PrimaryProdDataServiceConsumerBase, Ownab
         // By default we consider the transaction as accepted.
         magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
 
-        // Revert if standart paymaster input is shorter than 4 bytes
+        // Revert if standard paymaster input is shorter than 4 bytes
         if (_transaction.paymasterInput.length < 4) revert Errors.SHORT_PAYMASTER_INPUT();
 
         // Check the paymaster input selector to detect flow
