@@ -4,6 +4,7 @@
  * Proprietary and confidential
  */
 import '@matterlabs/hardhat-zksync';
+import "@matterlabs/hardhat-zksync-verify";
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@typechain/hardhat';
@@ -68,14 +69,22 @@ const config: HardhatUserConfig = {
                       mode: 'z',
                   }
                 : undefined,
-            libraries: {
-                'contracts/libraries/StringUtils.sol': {
-                    StringUtils: '0x7e390c46302Fb6D7f6C7b4e36937287eB678FBC0',
-                },
-            },
         },
     },
     defaultNetwork: 'abstractTestnet',
+    etherscan: {
+        apiKey: process.env.ABSSCAN_API_KEY,
+        customChains: [
+            {
+                network: 'abstractTestnet',
+                chainId: 11124,
+                urls: {
+                    apiURL: 'https://api-sepolia.abscan.org/api',
+                    browserURL: 'https://sepolia.abscan.org',
+                },
+            },
+        ],
+    },
     networks: {
         hardhat: {
             zksync: true,
