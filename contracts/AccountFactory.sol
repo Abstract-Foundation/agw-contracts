@@ -167,7 +167,7 @@ contract AccountFactory is Ownable2Step {
     }
 
     /**
-     * @notice To emit an event when a AGW account is created but not yet deployed
+     * @notice To emit an event when an AGW account is created but not yet deployed
      * @dev This event is so that we can index accounts that are created but not yet deployed
      * @param accountAddress address - Address of the AGW account that was created
      */
