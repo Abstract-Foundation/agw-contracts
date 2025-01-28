@@ -177,7 +177,7 @@ describe('AGW Contracts - Hook Manager tests', () => {
                 );
             });
 
-            it('should remove a execution hook', async () => {
+            it('should remove an execution hook', async () => {
                 expect(await account.isHook(await executionHook.getAddress()))
                     .to.be.true;
 
