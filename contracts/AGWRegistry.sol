@@ -27,7 +27,7 @@ contract AGWRegistry is Ownable2Step, IAGWRegistry {
     constructor(address _owner) Ownable(_owner) {}
 
     /**
-     * @notice Registers an account as a AGW account
+     * @notice Registers an account as an AGW account
      * @dev Can only be called by the factory or owner
      * @param account address - Address of the account to register
      */
@@ -55,7 +55,7 @@ contract AGWRegistry is Ownable2Step, IAGWRegistry {
     }
 
     /**
-     * @notice Unregisters an account as a AGW account
+     * @notice Unregisters an account as an AGW account
      * @dev Can only be called by the factory or owner
      * @param account address - Address of the account to unregister
      */
