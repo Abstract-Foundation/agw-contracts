@@ -60,7 +60,7 @@ const deployBatchCaller = async (): Promise<string> => {
 };
 
 const deployImplementation = async (
-    batchCallerAdddress: string,
+    batchCallerAddress: string,
 ): Promise<string> => {
     const contractArtifactName = 'ClaveImplementation';
     const result = await deployContract(hre, contractArtifactName, [
