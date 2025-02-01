@@ -75,7 +75,7 @@ contract AGWAccount is
         __ERC1271Handler_init();
         // check that this account is being deployed by the initial signer or the factory authorized deployer
         AccountFactory factory = AccountFactory(msg.sender);
-        // require a specific salt for the acccount based on the initial k1 owner
+        // require a specific salt for the account based on the initial k1 owner
         address expectedAddress = factory.getAddressForSalt(keccak256(abi.encodePacked(initialK1Owner)));
         if (address(this) != expectedAddress) {
             revert Errors.INVALID_SALT();
