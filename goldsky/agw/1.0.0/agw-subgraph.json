@@ -1,0 +1,30 @@
+{
+  "version": "1",
+  "name": "abstract-global-wallet",
+  "abis": {
+      "AccountFactory": {
+          "path": "./AccountFactory.json"
+      },
+      "AGWAccount": {
+          "path": "./AGWAccount.json"
+      }
+  },
+  "instances": [
+      {
+          "abi": "AccountFactory",
+          "address": "0x34ca1501FAE231cC2ebc995CE013Dbe882d7d081",
+          "startBlock": 76857,
+          "chain": "abstract"
+      },
+      {
+          "abi": "AGWAccount",
+          "source": {
+              "abi": "AccountFactory",
+              "eventSignature": "AGWAccountDeployed(address accountAddress)",
+              "addressParam": "accountAddress"
+          },
+          "chain": "abstract",
+          "startBlock": 76857
+      }
+  ]
+}
