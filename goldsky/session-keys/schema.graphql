@@ -1,0 +1,40 @@
+type Disabled @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Inited @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SessionCreated @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  sessionHash: Bytes! # bytes32
+  sessionSpec_signer: Bytes! # address
+  sessionSpec_expiresAt: BigInt! # uint256
+  sessionSpec_feeLimit_limitType: Int! # uint8
+  sessionSpec_feeLimit_limit: BigInt! # uint256
+  sessionSpec_feeLimit_period: BigInt! # uint256
+  sessionSpec_callPolicies: [Bytes!]! # tuple[]
+  sessionSpec_transferPolicies: [Bytes!]! # tuple[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SessionRevoked @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  sessionHash: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
