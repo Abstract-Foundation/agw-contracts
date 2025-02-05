@@ -45,11 +45,11 @@ export function handleInited(event: InitedEvent): void {
 
 export function handleSessionCreated(event: SessionCreatedEvent): void {
 
-  let sessionSpec = new SessionSpec(event.params.sessionHash)
+  let sessionSpec = new SessionSpec(event.params.sessionHash.concatI32(event.block.number.toI32()).concatI32(event.logIndex.toI32()));
   sessionSpec.signer = event.params.sessionSpec.signer
   sessionSpec.expiresAt = event.params.sessionSpec.expiresAt
 
-  let feeLimit = new UsageLimit(event.params.sessionHash.concatI32(event.logIndex.toI32()));
+  let feeLimit = new UsageLimit(sessionSpec.id);
   feeLimit.limitType = event.params.sessionSpec.feeLimit.limitType
   feeLimit.limit = event.params.sessionSpec.feeLimit.limit
   feeLimit.period = event.params.sessionSpec.feeLimit.period
@@ -75,7 +75,7 @@ export function handleSessionCreated(event: SessionCreatedEvent): void {
       constraints.push(constraint.id)
     }
     callPolicy.constraints = constraints
-    let valueLimit = new UsageLimit(callPolicy.id);  
+    let valueLimit = new UsageLimit(Bytes.fromUTF8("callPolicy").concat(callPolicy.id));  
     valueLimit.limitType = event.params.sessionSpec.callPolicies[i].valueLimit.limitType
     valueLimit.limit = event.params.sessionSpec.callPolicies[i].valueLimit.limit
     valueLimit.period = event.params.sessionSpec.callPolicies[i].valueLimit.period
@@ -90,7 +90,7 @@ export function handleSessionCreated(event: SessionCreatedEvent): void {
     let transferPolicy = new TransferSpec(sessionSpec.id.concatI32(i));
     transferPolicy.target = event.params.sessionSpec.transferPolicies[i].target
     transferPolicy.maxValuePerUse = event.params.sessionSpec.transferPolicies[i].maxValuePerUse
-    let valueLimit = new UsageLimit(transferPolicy.id);  
+    let valueLimit = new UsageLimit(Bytes.fromUTF8("transferPolicy").concat(transferPolicy.id));  
     valueLimit.limitType = event.params.sessionSpec.transferPolicies[i].valueLimit.limitType
     valueLimit.limit = event.params.sessionSpec.transferPolicies[i].valueLimit.limit
     valueLimit.period = event.params.sessionSpec.transferPolicies[i].valueLimit.period
