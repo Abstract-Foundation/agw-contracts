@@ -18,16 +18,50 @@ type SessionCreated @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
   sessionHash: Bytes! # bytes32
-  sessionSpec_signer: Bytes! # address
-  sessionSpec_expiresAt: BigInt! # uint256
-  sessionSpec_feeLimit_limitType: Int! # uint8
-  sessionSpec_feeLimit_limit: BigInt! # uint256
-  sessionSpec_feeLimit_period: BigInt! # uint256
-  sessionSpec_callPolicies: [Bytes!]! # tuple[]
-  sessionSpec_transferPolicies: [Bytes!]! # tuple[]
+  sessionSpec: SessionSpec!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type SessionSpec @entity(immutable: true) {
+  id: Bytes!
+  signer: Bytes! # address
+  expiresAt: BigInt! # uint256
+  feeLimit: UsageLimit!
+  callPolicies: [CallSpec!]!
+  transferPolicies: [TransferSpec!]!
+ }
+
+type UsageLimit @entity(immutable: true) {
+  id: Bytes!
+  limitType: Int! # uint8
+  limit: BigInt! # uint256
+  period: BigInt! # uint256
+}
+
+type CallSpec @entity(immutable: true) {
+  id: Bytes!
+  target: Bytes! # address
+  selector: Bytes! # bytes4
+  maxValuePerUse: BigInt! # uint256
+  valueLimit: UsageLimit!
+  constraints: [Constraint!]!
+}
+
+type TransferSpec @entity(immutable: true) {
+  id: Bytes!
+  target: Bytes! # address
+  maxValuePerUse: BigInt! # uint256
+  valueLimit: UsageLimit!
+}
+
+type Constraint @entity(immutable: true) {
+  id: Bytes!
+  condition: Int! # uint8
+  index: BigInt! # uint64
+  refValue: Bytes! # bytes32
+  limit: UsageLimit!
 }
 
 type SessionRevoked @entity(immutable: true) {
