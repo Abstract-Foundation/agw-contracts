@@ -12,7 +12,7 @@
   "instances": [
       {
           "abi": "AccountFactory",
-          "address": "0x34ca1501FAE231cC2ebc995CE013Dbe882d7d081",
+          "address": "0x9B947df68D35281C972511B3E7BC875926f26C1A",
           "startBlock": 76857,
           "chain": "abstract"
       },
