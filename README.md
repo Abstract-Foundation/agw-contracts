@@ -32,4 +32,4 @@ PRIVATE_KEY=123cde574ccff....
 
 -   [Website](https://abs.xyz/)
 -   [GitHub](https://github.com/Abstract-Foundation)
--   [Twitter](https://twitter.com/AbstractChain)
+-   [Twitter](https://x.com/AbstractChain)
