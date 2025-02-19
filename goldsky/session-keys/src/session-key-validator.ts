@@ -68,9 +68,18 @@ export function handleSessionCreated(event: SessionCreatedEvent): void {
     callPolicy.maxValuePerUse = event.params.sessionSpec.callPolicies[i].maxValuePerUse
     for (let j = 0; j < event.params.sessionSpec.callPolicies[i].constraints.length; j++) {
       let constraint = new Constraint(callPolicy.id.concatI32(j));
+
+      let constraintLimit = new UsageLimit(Bytes.fromUTF8("callPolicyConstraint").concat(callPolicy.id));
+      constraintLimit.limitType = event.params.sessionSpec.callPolicies[i].constraints[j].limit.limitType
+      constraintLimit.limit = event.params.sessionSpec.callPolicies[i].constraints[j].limit.limit
+      constraintLimit.period = event.params.sessionSpec.callPolicies[i].constraints[j].limit.period
+      constraintLimit.save()
+
+      constraint.limit = constraintLimit.id
       constraint.condition = event.params.sessionSpec.callPolicies[i].constraints[j].condition
       constraint.index = event.params.sessionSpec.callPolicies[i].constraints[j].index
       constraint.refValue = event.params.sessionSpec.callPolicies[i].constraints[j].refValue
+      
       constraint.save()
       constraints.push(constraint.id)
     }
