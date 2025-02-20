@@ -6,7 +6,8 @@ import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/acce
 
 enum PolicyType {
     Call,
-    Transfer
+    Transfer,
+    ApprovalTarget
 }
 
 enum Status {
@@ -17,7 +18,7 @@ enum Status {
 
 contract SessionKeyPolicyRegistry is AccessControlUpgradeable, UUPSUpgradeable {
     event PolicyStatusChanged(
-        PolicyType indexed policyType, address indexed target, bytes4 indexed selector, Status status
+        PolicyType indexed policyType, address indexed target, bytes32 indexed data, Status status
     );
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
@@ -41,6 +42,10 @@ contract SessionKeyPolicyRegistry is AccessControlUpgradeable, UUPSUpgradeable {
         _setPolicyStatus(PolicyType.Transfer, target, bytes4(0), status);
     }
 
+    function setApprovalTargetStatus(address token, address target, Status status) public onlyRole(MANAGER_ROLE) {
+        _setPolicyStatus(PolicyType.ApprovalTarget, token, bytes32(uint256(uint160(target))), status);
+    }
+
     function getCallPolicyStatus(address target, bytes4 selector) public view returns (Status) {
         return _getPolicyStatus(PolicyType.Call, target, selector);
     }
@@ -49,14 +54,18 @@ contract SessionKeyPolicyRegistry is AccessControlUpgradeable, UUPSUpgradeable {
         return _getPolicyStatus(PolicyType.Transfer, target, bytes4(0));
     }
 
-    function _setPolicyStatus(PolicyType policyType, address target, bytes4 selector, Status status) internal {
-        _policyStatus[keccak256(abi.encodePacked(policyType, target, selector))] = status;
-
-        emit PolicyStatusChanged(policyType, target, selector, status);
+    function getApprovalTargetStatus(address token, address target) public view returns (Status) {
+        return _getPolicyStatus(PolicyType.ApprovalTarget, token, bytes32(uint256(uint160(target))));
     }
 
-    function _getPolicyStatus(PolicyType policyType, address target, bytes4 selector) internal view returns (Status) {
-        return _policyStatus[keccak256(abi.encodePacked(policyType, target, selector))];
+    function _setPolicyStatus(PolicyType policyType, address target, bytes32 data, Status status) internal {
+        _policyStatus[keccak256(abi.encodePacked(policyType, target, data))] = status;
+
+        emit PolicyStatusChanged(policyType, target, data, status);
+    }
+
+    function _getPolicyStatus(PolicyType policyType, address target, bytes32 data) internal view returns (Status) {
+        return _policyStatus[keccak256(abi.encodePacked(policyType, target, data))];
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
