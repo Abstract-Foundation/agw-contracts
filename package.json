@@ -42,6 +42,7 @@
     "lint": "npx prettier --write --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "lint-check": "npx prettier --list-different --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "test": "TEST=true npx hardhat test --network hardhat",
-    "deploy-factory": "hardhat deploy-zksync --script deploy.ts --network abstractTestnet"
+    "deploy-factory": "hardhat deploy-zksync --script deploy.ts --network abstractTestnet",
+    "deploy-session-key-registry": "hardhat deploy-zksync --script deploy-session-key-registry.ts --network abstractTestnet"
   }
 }
