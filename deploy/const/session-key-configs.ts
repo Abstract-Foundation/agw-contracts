@@ -202,14 +202,14 @@ const sampleConfig5: PolicyConfig[] = [
 const sampleConfig6: PolicyConfig[] = [
   {
     type: PolicyType.Call,
-    target: "0xA27f718c7fB6e5f1eaEb894597143B6b880a3ae9",
+    target: "0xB4b55C656c6b89f020a6E1044B66D227B638C474",
     selector: "0x9b2c0a37", // requestTokenSpin selector
     status: Status.Allowed,
   },
   {
     type: PolicyType.ApprovalTarget,
     token: "0x9ebe3a824ca958e4b3da772d2065518f009cba62", // PENGU
-    target: "0xA27f718c7fB6e5f1eaEb894597143B6b880a3ae9",
+    target: "0xB4b55C656c6b89f020a6E1044B66D227B638C474",
     status: Status.Allowed,
   },
 ];
