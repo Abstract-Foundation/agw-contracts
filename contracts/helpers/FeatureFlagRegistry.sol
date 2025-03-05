@@ -10,7 +10,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 contract FeatureFlagRegistry is AccessControl {
     error Immutable();
 
-    event FeatureFlagEnabled(bytes32 indexed featureFlagHash, address indexed user, bool status);
+    event FeatureFlagSet(bytes32 indexed featureFlagHash, address indexed user, bool status);
     event FeatureFlagImmutable(bytes32 indexed featureFlagHash);
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
@@ -41,7 +41,7 @@ contract FeatureFlagRegistry is AccessControl {
         }
         _featureFlagStatus[featureFlagHash][user] = status;
 
-        emit FeatureFlagEnabled(featureFlagHash, user, status);
+        emit FeatureFlagSet(featureFlagHash, user, status);
     }
 
     /**
