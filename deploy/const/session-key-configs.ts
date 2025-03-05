@@ -233,9 +233,18 @@ const sampleConfig7: PolicyConfig[] = [
     selector: "0xdaa462ae", // claimMultiplePrizes selector
     status: Status.Allowed,
   },
-
-  // TODO: Add claimReferral
-  // TODO: Add claimMultipleReferrals
+  {
+    type: PolicyType.Call,
+    target: "0x1FD611a870c44f8EFa82CF62B67499D141abD7E9",
+    selector: "0x8589ee97", // claimReferral selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x1FD611a870c44f8EFa82CF62B67499D141abD7E9",
+    selector: "0xda4053ac", // claimMultipleReferrals selector
+    status: Status.Allowed,
+  },
 ];
 
 const sampleConfig8: PolicyConfig[] = [
