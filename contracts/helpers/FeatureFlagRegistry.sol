@@ -80,7 +80,7 @@ contract FeatureFlagRegistry is AccessControl {
     function isFeatureFlagEnabled(bytes32 featureFlagHash, address user) public view returns (bool) {
         bool globalStatus = _featureFlagStatus[featureFlagHash][address(0)];
 
-        if (user == address(0) || featureFlagImmutable[featureFlagHash]) {
+        if (featureFlagImmutable[featureFlagHash]) {
             return globalStatus;
         } else if (globalStatus) {
             return true;
