@@ -214,6 +214,93 @@ const sampleConfig6: PolicyConfig[] = [
   },
 ];
 
+const sampleConfig7: PolicyConfig[] = [
+  {
+    type: PolicyType.Call,
+    target: "0x03c9FEC896BC1a69EDAafaC47B6A1D473b864078",
+    selector: "0x073f5da3", // joinTournament selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x0C1Fb514EEe951F43d549666Bec113D9ADcFBf98",
+    selector: "0xda568094", // claimPrize selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x0C1Fb514EEe951F43d549666Bec113D9ADcFBf98",
+    selector: "0xdaa462ae", // claimMultiplePrizes selector
+    status: Status.Allowed,
+  },
+
+  // TODO: Add claimReferral
+  // TODO: Add claimMultipleReferrals
+];
+
+const sampleConfig8: PolicyConfig[] = [
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0xdef25acb", // createDrop selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x7f58b4bf", // mintToken selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0xeefdc1df", // mintTokenByCreator
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x42d96dd7", // refundToken selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x91eb290e", // batchRedeem selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x96949420", // joinQueue selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0xae796ab3", // leaveQueue selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x0dce83c7", // commitQueue selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0xd8d07eda", // revealQueue selector
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x5beaa049", // claimFromQueue selector
+    status: Status.Allowed,
+  },
+];
+
 // Session key configurations to approve from the sample configurations
 export const sessionKeysToApprove: PolicyConfig[] = [
   ...sampleConfig0,
@@ -223,4 +310,6 @@ export const sessionKeysToApprove: PolicyConfig[] = [
   ...sampleConfig4,
   ...sampleConfig5,
   ...sampleConfig6,
+  ...sampleConfig7,
+  ...sampleConfig8,
 ];

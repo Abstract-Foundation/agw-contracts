@@ -19,7 +19,9 @@ export default async function (): Promise<void> {
       ? process.argv[process.argv.slice(2).indexOf("--registry-address") + 3]
       : DEFAULT_REGISTRY_ADDRESS;
 
-  console.log(`Using SessionKeyPolicyRegistry at address: ${registryAddress}`);
+  console.log(
+    `Using SessionKeyPolicyRegistry at address: ${registryAddress}\n`
+  );
 
   // Connect to the registry contract
   const artifact = await hre.zksyncEthers.loadArtifact(
@@ -52,13 +54,12 @@ export default async function (): Promise<void> {
         );
 
         if (currentStatus === config.status) {
-          console.log(
+          console.warn(
             `${description} already set to ${Status[config.status]}. Skipping.`
           );
           return;
         }
 
-        console.log(`Adding ${description}`);
         tx = await registry.setCallPolicyStatus(
           config.target,
           config.selector,
@@ -71,13 +72,12 @@ export default async function (): Promise<void> {
         currentStatus = await registry.getTransferPolicyStatus(config.target);
 
         if (currentStatus === config.status) {
-          console.log(
+          console.warn(
             `${description} already set to ${Status[config.status]}. Skipping.`
           );
           return;
         }
 
-        console.log(`Adding ${description}`);
         tx = await registry.setTransferPolicyStatus(
           config.target,
           config.status
@@ -92,13 +92,12 @@ export default async function (): Promise<void> {
         );
 
         if (currentStatus === config.status) {
-          console.log(
+          console.warn(
             `${description} already set to ${Status[config.status]}. Skipping.`
           );
           return;
         }
 
-        console.log(`Adding ${description}`);
         tx = await registry.setApprovalTargetStatus(
           config.token,
           config.target,
@@ -107,22 +106,21 @@ export default async function (): Promise<void> {
         break;
 
       default:
-        console.warn(`Unknown policy type: ${(config as any).type}. Skipping.`);
+        console.error(
+          `Unknown policy type: ${(config as any).type}. Skipping.`
+        );
         return;
     }
 
     await tx.wait();
-    console.log(`Transaction successful: ${tx.hash}`);
+    console.log(
+      `Added ${description}` + `\n` + `Transaction hash: ${tx.hash}` + `\n`
+    );
   }
 
   // Process each session key configuration
   for (const config of sessionKeysToApprove) {
-    try {
-      // Type assertion needed because sessionKeysToApprove may not fully match our PolicyConfig type
-      await processPolicyConfig(config);
-    } catch (error) {
-      console.error(`Error adding session key configuration:`, error);
-    }
+    await processPolicyConfig(config);
   }
 
   console.log(
