@@ -55,13 +55,13 @@ const sampleConfig0: PolicyConfig[] = [
 const sampleConfig1: PolicyConfig[] = [
   {
     type: PolicyType.Call,
-    target: "0xe88ba37DE1F9d88989ae079AB6876F917EF64f3d",
+    target: "0x11614eE1eF07dEe4AC28893a00F6F63B13223906",
     selector: "0x3beba5c7",
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
-    target: "0xe88ba37DE1F9d88989ae079AB6876F917EF64f3d",
+    target: "0x11614eE1eF07dEe4AC28893a00F6F63B13223906",
     selector: "0x00f041ef",
     status: Status.Allowed,
   },
