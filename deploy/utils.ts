@@ -6,7 +6,7 @@
 import { Deployer } from '@matterlabs/hardhat-zksync';
 import '@matterlabs/hardhat-zksync-node/dist/type-extensions';
 import '@matterlabs/hardhat-zksync-verify/dist/src/type-extensions';
-import { ethers } from 'ethers';
+import { AbiCoder, ZeroHash, Contract, ethers } from 'ethers';
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Provider, Wallet, utils } from 'zksync-ethers';
 import { DeploymentType } from 'zksync-ethers/build/types';
@@ -107,6 +107,7 @@ export const deployContract = async (
     log(`\nStarting deployment process of "${contractArtifactName}"...`);
 
     const wallet = options?.wallet ?? getWallet(hre);
+    // @ts-ignore - wallet type is overridden by hardhat-zksync
     const deployer = new Deployer(hre, wallet);
     const artifact = await deployer
         .loadArtifact(contractArtifactName)
@@ -221,3 +222,40 @@ export const LOCAL_RICH_WALLETS = [
             '0x3eb15da85647edd9a1159a4a13b9e7c56877c4eb33f614546d4db06a51868b1c',
     },
 ];
+
+export async function create2IfNotExists(hre: HardhatRuntimeEnvironment, contractName: string, constructorArguments: any[]): Promise<Contract> {
+
+    const artifact = await hre.zksyncEthers.loadArtifact(contractName);
+    const bytecodeHash = utils.hashBytecode(artifact.bytecode);
+
+    const constructor = artifact.abi.find(abi => abi.type === "constructor");
+
+    let encodedConstructorArguments = "0x";
+    if (constructor) {
+        encodedConstructorArguments = AbiCoder.defaultAbiCoder().encode(constructor.inputs, constructorArguments);
+    }
+
+    const address = utils.create2Address("0x0000000000000000000000000000000000010000", bytecodeHash, ZeroHash, encodedConstructorArguments);
+    
+    const provider = getProvider(hre);
+    const code = await provider.getCode(address);
+    if (code !== "0x") {
+        console.log(`Contract ${contractName} already deployed at ${address}`);
+
+        // enable this to verify the contracts on a subsequent run
+        // await verifyContract(hre, {
+        //     address,
+        //     contract: artifact.sourceName,
+        //     constructorArguments: encodedConstructorArguments,
+        //     bytecode: artifact.bytecode
+        // })
+
+        return new Contract(address, artifact.abi, getWallet(hre));
+    }
+
+    return deployContract(hre, contractName, constructorArguments, {
+        wallet: getWallet(hre),
+        silent: false,
+    }, 'create2');
+
+}

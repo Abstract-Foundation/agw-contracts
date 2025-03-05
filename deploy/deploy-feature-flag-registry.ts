@@ -16,10 +16,8 @@ export default async function (): Promise<void> {
 
     const initialOwner = fundingWallet.address;
 
-    const implementation = await create2IfNotExists(hre, "SessionKeyPolicyRegistry", []);
+    const implementation = await create2IfNotExists(hre, "FeatureFlagRegistry", [initialOwner]);
 
-    await create2IfNotExists(hre, "ERC1967Proxy", [
-        await implementation.getAddress(), 
-        implementation.interface.encodeFunctionData("initialize", [initialOwner])
-    ]);
+    console.log("FeatureFlagRegistry deployed at", await implementation.getAddress());
 }
+
