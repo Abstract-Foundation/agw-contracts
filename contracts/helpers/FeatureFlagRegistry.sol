@@ -4,43 +4,39 @@ pragma solidity 0.8.26;
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract FeatureFlagRegistry is AccessControl {
-    error CircuitBreakerTripped();
+    error Immutable();
+
+    event FeatureFlagEnabled(bytes32 indexed featureFlagHash, address indexed user, bool status);
+    event FeatureFlagImmutable(bytes32 indexed featureFlagHash);
 
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
-    mapping(bytes32 => mapping(address => bool)) public _featureFlagForAddress;
-    mapping(bytes32 => bool) public _featureFlagGlobalStatus;
-    mapping(bytes32 => bool) public _featureFlagCircuitBreaker;
+    mapping(bytes32 => mapping(address => bool)) public featureFlagStatus;
+    mapping(bytes32 => bool) public featureFlagImmutable;
 
     constructor(address owner) {
         _grantRole(DEFAULT_ADMIN_ROLE, owner);
     }
 
-    function setFeatureFlagGlobalStatus(string memory featureFlag, bool status) public onlyRole(MANAGER_ROLE) {
-        bytes32 featureFlagHash = _hashFeatureFlag(featureFlag);
-        if (_featureFlagCircuitBreaker[featureFlagHash]) {
-            revert CircuitBreakerTripped();
-        }
-        _featureFlagGlobalStatus[featureFlagHash] = status;
-    }
-
-    function setFeatureFlagForAddress(string memory featureFlag, address user, bool status)
+    function setFeatureFlagStatus(string memory featureFlag, address user, bool status)
         public
         onlyRole(MANAGER_ROLE)
     {
         bytes32 featureFlagHash = _hashFeatureFlag(featureFlag);
-        if (_featureFlagCircuitBreaker[featureFlagHash]) {
-            revert CircuitBreakerTripped();
+        if (featureFlagImmutable[featureFlagHash]) {
+            revert Immutable();
         }
-        _featureFlagForAddress[featureFlagHash][user] = status;
+        featureFlagStatus[featureFlagHash][user] = status;
+
+        emit FeatureFlagEnabled(featureFlagHash, user, status);
     }
 
-    function tripFeatureFlagCircuitBreaker(string memory featureFlag) public onlyRole(MANAGER_ROLE) {
+    function setFeatureFlagImmutable(string memory featureFlag) public onlyRole(MANAGER_ROLE) {
         bytes32 featureFlagHash = _hashFeatureFlag(featureFlag);
-        if (_featureFlagCircuitBreaker[featureFlagHash]) {
-            revert CircuitBreakerTripped();
+        if (featureFlagImmutable[featureFlagHash]) {
+            revert Immutable();
         }
-        _featureFlagCircuitBreaker[featureFlagHash] = true;
+        featureFlagImmutable[featureFlagHash] = true;
     }
 
     function isFeatureFlagEnabled(string memory featureFlag, address user) public view returns (bool) {
@@ -50,14 +46,14 @@ contract FeatureFlagRegistry is AccessControl {
     }
 
     function isFeatureFlagEnabled(bytes32 featureFlagHash, address user) public view returns (bool) {
-        bool globalStatus = _featureFlagGlobalStatus[featureFlagHash];
+        bool globalStatus = featureFlagStatus[featureFlagHash][address(0)];
 
-        if (_featureFlagCircuitBreaker[featureFlagHash]) {
+        if (user == address(0) || featureFlagImmutable[featureFlagHash]) {
             return globalStatus;
         } else if (globalStatus) {
             return true;
         }
-        return _featureFlagForAddress[featureFlagHash][user];
+        return featureFlagStatus[featureFlagHash][user];
     }
 
     function _hashFeatureFlag(string memory featureFlag) internal pure returns (bytes32) {
