@@ -69,9 +69,9 @@ const sampleConfig1: PolicyConfig[] = [
 
 const sampleConfig2: PolicyConfig[] = [
   {
-    type: PolicyType.Call,
-    target: "0x84A71ccD554Cc1b02749b35d22F684CC8ec987e1",
-    selector: "0x095ea7b3", // approve selector
+    type: PolicyType.ApprovalTarget,
+    token: "0x84A71ccD554Cc1b02749b35d22F684CC8ec987e1", // USDC
+    target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
     status: Status.Allowed,
   },
   {
