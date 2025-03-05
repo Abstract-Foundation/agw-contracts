@@ -13,7 +13,7 @@ export default async function (): Promise<void> {
   const wallet = getWallet(hre);
 
   // Use the default registry contract address from create2 or override if one is provided via CLI args
-  const DEFAULT_REGISTRY_ADDRESS = "0x7dA0211D162a26839Bbb8232Da13fbE068440d95";
+  const DEFAULT_REGISTRY_ADDRESS = "0xfD20b9d7A406e2C4f5D6Df71ABE3Ee48B2EccC9F";
   const registryAddress =
     process.argv.slice(2).indexOf("--registry-address") >= 0
       ? process.argv[process.argv.slice(2).indexOf("--registry-address") + 3]
@@ -48,10 +48,10 @@ export default async function (): Promise<void> {
     switch (config.type) {
       case PolicyType.Call:
         description = `Call policy for target: ${config.target}, selector: ${config.selector}`;
-        currentStatus = await registry.getCallPolicyStatus(
+        currentStatus = Number(await registry.getCallPolicyStatus(
           config.target,
           config.selector
-        );
+        ));
 
         if (currentStatus === config.status) {
           console.warn(
@@ -69,7 +69,7 @@ export default async function (): Promise<void> {
 
       case PolicyType.Transfer:
         description = `Transfer policy for target: ${config.target}`;
-        currentStatus = await registry.getTransferPolicyStatus(config.target);
+        currentStatus = Number(await registry.getTransferPolicyStatus(config.target));
 
         if (currentStatus === config.status) {
           console.warn(
@@ -86,10 +86,10 @@ export default async function (): Promise<void> {
 
       case PolicyType.ApprovalTarget:
         description = `Approval Target policy for token: ${config.token}, target: ${config.target}`;
-        currentStatus = await registry.getApprovalTargetStatus(
+        currentStatus = Number(await registry.getApprovalTargetStatus(
           config.token,
           config.target
-        );
+        ));
 
         if (currentStatus === config.status) {
           console.warn(
