@@ -59,6 +59,14 @@ const abstractTestnet: NetworkUserConfig = {
     chainId: 11124,
 }
 
+const abstractMainnet: NetworkUserConfig = {
+    url: "https://api.mainnet.abs.xyz",
+    ethNetwork: "mainnet",
+    zksync: true,
+    verifyURL: 'https://api-explorer-verify.mainnet.abs.xyz/contract_verification',
+    chainId: 2741,
+}
+
 const config: HardhatUserConfig = {
     zksolc: {
         version: '1.5.6',
@@ -83,6 +91,14 @@ const config: HardhatUserConfig = {
                     browserURL: 'https://sepolia.abscan.org',
                 },
             },
+            {
+                network: 'abstractMainnet',
+                chainId: 2741,
+                urls: {
+                    apiURL: 'https://api.abscan.org/api',
+                    browserURL: 'https://abscan.org',
+                },
+            },
         ],
     },
     networks: {
@@ -93,6 +109,7 @@ const config: HardhatUserConfig = {
         zkSyncSepolia,
         zkSyncMainnet,
         abstractTestnet,
+        abstractMainnet,
         inMemoryNode,
         dockerizedNode,
     },
