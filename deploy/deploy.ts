@@ -4,16 +4,14 @@
  * Proprietary and confidential
  */
 import {
-    AbiCoder,
     hexlify,
     keccak256,
     ZeroAddress,
-    ZeroHash,
     zeroPadValue
 } from 'ethers';
 import * as hre from 'hardhat';
 import { Contract, Wallet, utils } from 'zksync-ethers';
-import { deployContract, getProvider, getWallet, verifyContract } from '../deploy/utils';
+import { create2IfNotExists, getProvider, getWallet, verifyContract } from '../deploy/utils';
 import type { CallStruct } from '../typechain-types/contracts/batch/BatchCaller';
 let fundingWallet: Wallet;
 
@@ -30,15 +28,15 @@ export default async function (): Promise<void> {
 
     const initialOwner = fundingWallet.address;
 
-    eoaValidator = await create2IfNotExists("EOAValidator", []);
-    implementation = await create2IfNotExists("AGWAccount", [await eoaValidator.getAddress()]);
-    registry = await create2IfNotExists("AGWRegistry", [initialOwner]);
-    await create2IfNotExists("AccountProxy", [await implementation.getAddress()]);
+    eoaValidator = await create2IfNotExists(hre, "EOAValidator", []);
+    implementation = await create2IfNotExists(hre, "AGWAccount", [await eoaValidator.getAddress()]);
+    registry = await create2IfNotExists(hre, "AGWRegistry", [initialOwner]);
+    await create2IfNotExists(hre, "AccountProxy", [await implementation.getAddress()]);
 
     const accountProxyArtifact = await hre.zksyncEthers.loadArtifact('AccountProxy');
     const bytecodeHash = utils.hashBytecode(accountProxyArtifact.bytecode);
     console.log("bytecodeHash", hexlify(bytecodeHash));
-    factory = await create2IfNotExists("AccountFactory", [await implementation.getAddress(), "0xb4e581f5", await registry.getAddress(), bytecodeHash, fundingWallet.address, initialOwner]);
+    factory = await create2IfNotExists(hre, "AccountFactory", [await implementation.getAddress(), "0xb4e581f5", await registry.getAddress(), bytecodeHash, fundingWallet.address, initialOwner]);
 
     const factoryAddress = await factory.getAddress();
     const isFactory = await registry.isFactory(factoryAddress);
@@ -47,48 +45,10 @@ export default async function (): Promise<void> {
         await registry.setFactory(factoryAddress);
     }
 
-    await create2IfNotExists("AAFactoryPaymaster", [await factory.getAddress()]);
-    await create2IfNotExists("SessionKeyValidator", []);
+    await create2IfNotExists(hre, "AAFactoryPaymaster", [await factory.getAddress()]);
+    await create2IfNotExists(hre, "SessionKeyValidator", []);
     
     await deployAccountIfNotExists(initialOwner);
-}
-
-
-async function create2IfNotExists(contractName: string, constructorArguments: any[]): Promise<Contract> {
-
-    const artifact = await hre.zksyncEthers.loadArtifact(contractName);
-    const bytecodeHash = utils.hashBytecode(artifact.bytecode);
-
-    const constructor = artifact.abi.find(abi => abi.type === "constructor");
-
-    let encodedConstructorArguments = "0x";
-    if (constructor) {
-        encodedConstructorArguments = AbiCoder.defaultAbiCoder().encode(constructor.inputs, constructorArguments);
-    }
-
-    const address = utils.create2Address("0x0000000000000000000000000000000000010000", bytecodeHash, ZeroHash, encodedConstructorArguments);
-    
-    const provider = getProvider(hre);
-    const code = await provider.getCode(address);
-    if (code !== "0x") {
-        console.log(`Contract ${contractName} already deployed at ${address}`);
-
-        // enable this to verify the contracts on a subsequent run
-        // await verifyContract(hre, {
-        //     address,
-        //     contract: artifact.sourceName,
-        //     constructorArguments: encodedConstructorArguments,
-        //     bytecode: artifact.bytecode
-        // })
-
-        return new Contract(address, artifact.abi, getWallet(hre));
-    }
-
-    return deployContract(hre, contractName, constructorArguments, {
-        wallet: getWallet(hre),
-        silent: false,
-    }, 'create2');
-
 }
 
 async function deployAccountIfNotExists(initialOwner: string) {
