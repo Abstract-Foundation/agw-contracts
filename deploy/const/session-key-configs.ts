@@ -200,7 +200,7 @@ const sampleConfig5: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x3272596F776470D2D7C3f7dfF3dc50888b7D8967",
-    selector: "0x4e71d92d", // claim(uint256)
+    selector: "0x379607f5", // claim(uint256)
     status: Status.Allowed,
   },
   
