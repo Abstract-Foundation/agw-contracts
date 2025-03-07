@@ -381,13 +381,19 @@ const sampleConfig9: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
-    selector: "0x8d1a7289", // validateServiceExecution(uint256,uint256)
+    selector: "0x14879aae", // validateServiceExecution(uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
     selector: "0x7b15f1b6", // createService(string,string,uint256)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0x52a74c0a", // createAndUpdateFromService(uint256,uint256)
     status: Status.Allowed,
   },
 ];
