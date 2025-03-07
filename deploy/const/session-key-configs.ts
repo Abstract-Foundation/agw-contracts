@@ -257,6 +257,24 @@ const sampleConfig7: PolicyConfig[] = [
 const sampleConfig8: PolicyConfig[] = [
   {
     type: PolicyType.Call,
+    target: "0x3B50dE27506f0a8C1f4122A1e6F470009a76ce2A",
+    selector: "0x7060a227",
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0xf242432a", // safeTransferFrom(address,address,uint256,uint256,bytes)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
+    selector: "0x2eb2c2d6", // safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
     selector: "0xdef25acb", // createDrop(uint256,uint256,bool,bool,bytes,uint256,uint256,uint256,uint256,uint256)
     status: Status.Allowed,
