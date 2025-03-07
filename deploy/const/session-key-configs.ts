@@ -39,15 +39,15 @@ export type PolicyConfig =
 
 const sampleConfig0: PolicyConfig[] = [
   {
-    type: PolicyType.Call,
-    target: "0x57E12aBdF617FcD0D2ab6984C289075aA90CAc8C",
-    selector: "0xa22cb465", // setApprovalForAll selector
+    type: PolicyType.ApprovalTarget,
+    token: "0x57E12aBdF617FcD0D2ab6984C289075aA90CAc8C",
+    target: "0xF99E6e273a90Fac72F3692B033A46e8b602DC44e",
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0xF99E6e273a90Fac72F3692B033A46e8b602DC44e",
-    selector: "0x42966c68", // burnAndMint selector
+    selector: "0xee026cab", // burnAndMint(uint256[],uint256[])
     status: Status.Allowed,
   },
 ];
