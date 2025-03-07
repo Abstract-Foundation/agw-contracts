@@ -194,7 +194,7 @@ const sampleConfig5: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x3272596F776470D2D7C3f7dfF3dc50888b7D8967",
-    selector: "0x5d7a2f89", // purchase(uint256,uint16,address,address,uint256,uint256)
+    selector: "0x83a84ba9", // claimReferralFees()
     status: Status.Allowed,
   },
   {
