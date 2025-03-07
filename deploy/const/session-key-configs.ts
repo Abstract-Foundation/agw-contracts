@@ -161,19 +161,19 @@ const sampleConfig4: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x42b2c802205b908030Bc374c1D30Cc4997FC199a",
-    selector: "0xf088d547", // buy selector
+    selector: "0xcce7ec13", // buy(address,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x42b2c802205b908030Bc374c1D30Cc4997FC199a",
-    selector: "0xe65e7daf", // sell selector
+    selector: "0xe1adf47b", // sell(address,uint112,uint112)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x42b2c802205b908030Bc374c1D30Cc4997FC199a",
-    selector: "0x2a1b1f7f", // deployToken selector
+    selector: "0x028221cc", // deployToken(address,address,string,string,uint256,string,string,bytes32)
     status: Status.Allowed,
   },
 ];
@@ -210,7 +210,7 @@ const sampleConfig6: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0xB4b55C656c6b89f020a6E1044B66D227B638C474",
-    selector: "0x9b2c0a37", // requestTokenSpin selector
+    selector: "0x08bc2601", // requestTokenSpin(uint8,address,uint256)
     status: Status.Allowed,
   },
   {
@@ -225,31 +225,31 @@ const sampleConfig7: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x03c9FEC896BC1a69EDAafaC47B6A1D473b864078",
-    selector: "0x073f5da3", // joinTournament selector
+    selector: "0x073f5da3", // joinTournament(bytes,string,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0C1Fb514EEe951F43d549666Bec113D9ADcFBf98",
-    selector: "0xda568094", // claimPrize selector
+    selector: "0xda568094", // claimPrize(bytes,string,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0C1Fb514EEe951F43d549666Bec113D9ADcFBf98",
-    selector: "0xdaa462ae", // claimMultiplePrizes selector
+    selector: "0xdaa462ae", // claimMultiplePrizes(bytes[],string[],uint256[],uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x1FD611a870c44f8EFa82CF62B67499D141abD7E9",
-    selector: "0x8589ee97", // claimReferral selector
+    selector: "0x8589ee97", // claimReferral(bytes,string,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x1FD611a870c44f8EFa82CF62B67499D141abD7E9",
-    selector: "0xda4053ac", // claimMultipleReferrals selector
+    selector: "0xda4053ac", // claimMultipleReferrals(bytes[],string[],uint256[],uint256)
     status: Status.Allowed,
   },
 ];
@@ -258,61 +258,61 @@ const sampleConfig8: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0xdef25acb", // createDrop selector
+    selector: "0xdef25acb", // createDrop(uint256,uint256,bool,bool,bytes,uint256,uint256,uint256,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x7f58b4bf", // mintToken selector
+    selector: "0x7f58b4bf", // mintToken(uint256,bytes,uint256,bool,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0xeefdc1df", // mintTokenByCreator
+    selector: "0xeefdc1df", // mintTokenByCreator(uint256,bytes,address,uint256,bool,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x42d96dd7", // refundToken selector
+    selector: "0x42d96dd7", // refundToken(uint256,uint256,uint256,bytes)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x91eb290e", // batchRedeem selector
+    selector: "0x91eb290e", // batchRedeem(uint256[],uint256,uint256[],bytes)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x96949420", // joinQueue selector
+    selector: "0x96949420", // joinQueue(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0xae796ab3", // leaveQueue selector
+    selector: "0xae796ab3", // leaveQueue(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x0dce83c7", // commitQueue selector
+    selector: "0x0dce83c7", // commitQueue(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0xd8d07eda", // revealQueue selector
+    selector: "0xd8d07eda", // revealQueue(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x458422e93BF89A109afc4fac00aAcF2F18FcF541",
-    selector: "0x5beaa049", // claimFromQueue selector
+    selector: "0x5beaa049", // claimFromQueue(uint256)
     status: Status.Allowed,
   },
 ];
