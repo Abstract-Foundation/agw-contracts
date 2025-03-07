@@ -335,6 +335,64 @@ const sampleConfig8: PolicyConfig[] = [
   },
 ];
 
+const sampleConfig9: PolicyConfig[] = [
+  {
+    type: PolicyType.Call,
+    target: "0x0DA6Bfd5d50edb31AF14C3A7820d28dB475Ec97D",
+    selector: "0x2268a972", // buyCredits(string,uint256,address) 
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x0DA6Bfd5d50edb31AF14C3A7820d28dB475Ec97D",
+    selector: "0xeccc35fe", // sellCredits(string,uint256,address)
+    status: Status.Allowed,
+  }, 
+  {
+    type: PolicyType.Call,
+    target: "0x0DA6Bfd5d50edb31AF14C3A7820d28dB475Ec97D",
+    selector: "0x406f9248", // claimCreatorFee(string)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0x45351035", // requestServiceExecution(uint256,string)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0xbc467855", // acceptServiceExecution(uint256,uint256,string)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0xa7e52baa", // cancelServiceExecution(uint256,uint256,string)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0x2add845c", // disputeServiceExecution(uint256,uint256,string)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0x8d1a7289", // validateServiceExecution(uint256,uint256)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x89e74F963e506D6921FF33cB75b53b963D7218bE",
+    selector: "0x7b15f1b6", // createService(string,string,uint256)
+    status: Status.Allowed,
+  },
+];
+
+
 // Session key configurations to approve from the sample configurations
 export const sessionKeysToApprove: PolicyConfig[] = [
   ...sampleConfig0,
@@ -346,4 +404,5 @@ export const sessionKeysToApprove: PolicyConfig[] = [
   ...sampleConfig6,
   ...sampleConfig7,
   ...sampleConfig8,
+  ...sampleConfig9,
 ];
