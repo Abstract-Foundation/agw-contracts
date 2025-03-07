@@ -182,21 +182,28 @@ const sampleConfig5: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x3439153EB7AF838Ad19d56E1571FBD09333C2809",
-    selector: "0x2e1a7d4d", // withdraw selector
+    selector: "0x2e1a7d4d", // withdraw(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x3272596F776470D2D7C3f7dfF3dc50888b7D8967",
-    selector: "0x8f5d96d0", // purchaseETH selector
+    selector: "0xf310d2e6", // purchaseETH(uint256,uint16,address,address,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x3272596F776470D2D7C3f7dfF3dc50888b7D8967",
-    selector: "0x4e71d92d", // claim selector
+    selector: "0x5d7a2f89", // purchase(uint256,uint16,address,address,uint256,uint256)
     status: Status.Allowed,
   },
+  {
+    type: PolicyType.Call,
+    target: "0x3272596F776470D2D7C3f7dfF3dc50888b7D8967",
+    selector: "0x4e71d92d", // claim(uint256)
+    status: Status.Allowed,
+  },
+  
 ];
 
 const sampleConfig6: PolicyConfig[] = [
