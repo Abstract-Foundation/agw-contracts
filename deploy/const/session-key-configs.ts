@@ -77,43 +77,43 @@ const sampleConfig2: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0xb1a1a882", // depositETH selector
+    selector: "0x2e599054", // depositETH(address,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0x47e7ef24", // deposit selector
+    selector: "0x8340f549", // deposit(address,address,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0x4782f779", // withdrawETH selector
+    selector: "0xf14210a6", // withdrawETH(uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0x69328dec", // withdraw selector
+    selector: "0xf3fef3a3", // withdraw(address,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0xc2708f09", // expire selector
+    selector: "0xc2708f09", // expire((address,address,uint32,uint64,address,uint96,address,bytes))
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0xbc011e72", // solve selector
+    selector: "0xbc011e72", // solve((address,address,uint32,uint64,address,uint96,address,bytes),bytes32,bytes)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x0b4429576e5ed44a1b8f676c8217eb45707afa3d",
-    selector: "0x19b410fe", // coin selector
+    selector: "0x19b410fe", // coin((address,address,uint32,uint64,address,uint96,address,bytes),bytes,uint256)
     status: Status.Allowed,
   },
 ];
@@ -122,19 +122,19 @@ const sampleConfig3: PolicyConfig[] = [
   {
     type: PolicyType.Call,
     target: "0x4f4988A910f8aE9B3214149A8eA1F2E4e3Cd93CC",
-    selector: "0xe4849b32", // sell selector
+    selector: "0x3620875e", // sell(uint256,uint256,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x4f4988A910f8aE9B3214149A8eA1F2E4e3Cd93CC",
-    selector: "0xd6bbd32d", // buy selector
+    selector: "0x1281311d", // buy(uint256,uint256,uint256,uint256)
     status: Status.Allowed,
   },
   {
     type: PolicyType.Call,
     target: "0x4f4988A910f8aE9B3214149A8eA1F2E4e3Cd93CC",
-    selector: "0x4f1ddc4f", // claimWinnings selector
+    selector: "0x677bd9ff", // claimWinnings(uint256)
     status: Status.Allowed,
   },
   {
