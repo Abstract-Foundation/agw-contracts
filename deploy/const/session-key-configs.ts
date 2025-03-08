@@ -138,6 +138,12 @@ const sampleConfig3: PolicyConfig[] = [
     status: Status.Allowed,
   },
   {
+    type: PolicyType.Call,
+    target: "0x4f4988A910f8aE9B3214149A8eA1F2E4e3Cd93CC",
+    selector: "0xec93f0f5", // claimVoidedOutcomeShares(uint256,uint256)
+    status: Status.Allowed,
+  },
+  {
     type: PolicyType.ApprovalTarget,
     token: "0xf19609e96187cdaa34cffb96473fac567e547302", // PTS
     target: "0x4f4988A910f8aE9B3214149A8eA1F2E4e3Cd93CC",
@@ -398,6 +404,45 @@ const sampleConfig9: PolicyConfig[] = [
   },
 ];
 
+const sampleConfig10: PolicyConfig[] = [
+  {
+    type: PolicyType.Call,
+    target: "0x06D7Ee1D50828Ca96e11890A1601f6fe61F1e584",
+    selector: "0xfe939afc", // stakeMany(uint256[])
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x06D7Ee1D50828Ca96e11890A1601f6fe61F1e584",
+    selector: "0x0d50c189", // unstakeMany(uint256[])
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x06D7Ee1D50828Ca96e11890A1601f6fe61F1e584",
+    selector: "0x925489a8", // claimMany(uint256[])
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0x06D7Ee1D50828Ca96e11890A1601f6fe61F1e584",
+    selector: "0x8ca96347", // upgradeMany(uint256[])
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0xeEa334B302BD8b1b96D4EF73B8f4467a347dA6f0",
+    selector: "0x22b46e42", // stakeMany(uint256[],uint8)
+    status: Status.Allowed,
+  },
+  {
+    type: PolicyType.Call,
+    target: "0xeEa334B302BD8b1b96D4EF73B8f4467a347dA6f0",
+    selector: "0xc63db6bd", // requestUnstakeMany(uint256[])
+    status: Status.Allowed,
+  },
+
+]
 
 // Session key configurations to approve from the sample configurations
 export const sessionKeysToApprove: PolicyConfig[] = [
@@ -411,4 +456,5 @@ export const sessionKeysToApprove: PolicyConfig[] = [
   ...sampleConfig7,
   ...sampleConfig8,
   ...sampleConfig9,
+  ...sampleConfig10,
 ];
