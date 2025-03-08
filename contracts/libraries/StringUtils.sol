@@ -338,7 +338,7 @@ library strings {
         for (uint i = 1; i < length; i++) {
             divisor = divisor / 256;
             b = (word / divisor) & 0xFF;
-            if (b & 0xC0 != 0x80) {
+            if ((b & 0xC0) != 0x80) {
                 // Invalid UTF-8 sequence
                 return 0;
             }
