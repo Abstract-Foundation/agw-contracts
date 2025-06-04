@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {BOOTLOADER_FORMAL_ADDRESS} from '@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol';
+import {BOOTLOADER_FORMAL_ADDRESS} from '@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol';
 import {Errors} from '../libraries/Errors.sol';
 
 /**

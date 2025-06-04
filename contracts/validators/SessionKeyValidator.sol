@@ -8,7 +8,7 @@ import { IModule } from "../interfaces/IModule.sol";
 import { IValidationHook } from "../interfaces/IHook.sol";
 import { IModuleValidator } from "../interfaces/IModuleValidator.sol";
 import { OperationType } from "../interfaces/IValidator.sol";
-import { Transaction } from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
+import { Transaction } from "@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { IHookManager } from "../interfaces/IHookManager.sol";
