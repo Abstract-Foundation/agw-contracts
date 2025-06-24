@@ -14,10 +14,10 @@ import {SafeTransferLib} from "solady/src/utils/ext/zksync/SafeTransferLib.sol";
 
 contract ChainOpsPaymaster is OwnableRoles, IPaymaster {
     using SafeTransferLib for address;
+    using SafeTransferLib for address payable;
 
     error OnlyBootloader();
     error WithdrawalFailed();
-    error BootloaderCallFailed();
     error SponsorshipRefused();
 
     uint256 public constant MANAGER_ROLE = _ROLE_0;
@@ -31,7 +31,7 @@ contract ChainOpsPaymaster is OwnableRoles, IPaymaster {
     constructor(address owner, address aaFactory) {
         AA_FACTORY = AccountFactory(aaFactory);
         _initializeOwner(owner);
-        _grantRole(MANAGER_ROLE, owner);
+        _grantRoles(owner, MANAGER_ROLE);
     }
 
     function validateAndPayForPaymasterTransaction(bytes32, bytes32, Transaction calldata _transaction)
@@ -78,10 +78,7 @@ contract ChainOpsPaymaster is OwnableRoles, IPaymaster {
 
         uint256 requiredETH = _transaction.gasLimit * _transaction.maxFeePerGas;
 
-        (bool success,) = BOOTLOADER_FORMAL_ADDRESS.call{value: requiredETH}("");
-        if (!success) {
-            revert BootloaderCallFailed();
-        }
+        BOOTLOADER_FORMAL_ADDRESS.safeTransferETH(requiredETH);
     }
 
     function postTransaction(
