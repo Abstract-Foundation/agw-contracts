@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
-import {IPaymaster, ExecutionResult, PAYMASTER_VALIDATION_SUCCESS_MAGIC} from '@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymaster.sol';
-import {IPaymasterFlow} from '@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymasterFlow.sol';
-import {Transaction} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol';
-import {BOOTLOADER_FORMAL_ADDRESS} from '@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol';
+import {IPaymaster, ExecutionResult, PAYMASTER_VALIDATION_SUCCESS_MAGIC} from '@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymaster.sol';
+import {IPaymasterFlow} from '@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymasterFlow.sol';
+import {Transaction} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol';
+import {BOOTLOADER_FORMAL_ADDRESS} from '@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol';
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
 import {Errors} from '../libraries/Errors.sol';
 import {IAGWRegistry} from '../interfaces/IAGWRegistry.sol';

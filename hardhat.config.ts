@@ -68,6 +68,9 @@ const abstractMainnet: NetworkUserConfig = {
 }
 
 const config: HardhatUserConfig = {
+    zksyncAnvil: {
+        version: "0.6.5",
+    },
     zksolc: {
         version: '1.5.6',
         settings: {

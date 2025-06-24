@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Transaction} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
+import {Transaction} from "@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol";
 import {
     IPaymaster,
     ExecutionResult,
     PAYMASTER_VALIDATION_SUCCESS_MAGIC
-} from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymaster.sol";
+} from "@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymaster.sol";
 import {AccountFactory} from "../AccountFactory.sol";
 
-import {BOOTLOADER_FORMAL_ADDRESS} from "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
+import {BOOTLOADER_FORMAL_ADDRESS} from "@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol";
 /**
  * This Paymaster sponsors the gas for any user attempting to deploy an AGW account for themselves
  * It also allows the canonical AGW deployer to sponsor deployments for users

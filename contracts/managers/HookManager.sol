@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {ERC165Checker} from '@openzeppelin/contracts/utils/introspection/ERC165Checker.sol';
-import {Transaction} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol';
+import {Transaction} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol';
 import {ExcessivelySafeCall} from '@nomad-xyz/excessively-safe-call/src/ExcessivelySafeCall.sol';
 
 import {Auth} from '../auth/Auth.sol';

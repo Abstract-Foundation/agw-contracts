@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
-import { Transaction } from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol";
-import { IPaymasterFlow } from "@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IPaymasterFlow.sol";
+import { Transaction } from "@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol";
+import { IPaymasterFlow } from "@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymasterFlow.sol";
 import { TimestampAsserterLocator } from "../helpers/TimestampAsserterLocator.sol";
 
 library SessionLib {

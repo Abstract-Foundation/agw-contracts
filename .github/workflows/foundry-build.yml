@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  check:
+    name: Foundry project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+      
+      - name: Install Foundry
+        uses: abstract-foundation/foundry-toolchain-zksync@v1
+
+      - name: Install dependencies
+        run: |
+          npm ci --legacy-peer-deps
+
+      - name: Show Forge version
+        run: |
+          forge --version
+
+    #   - name: Run Forge fmt
+    #     run: |
+    #       forge fmt --check
+    #     id: fmt
+
+      - name: Run Forge build
+        run: |
+          forge build --zksync
+        id: build
+
+    #   - name: Run Forge tests
+    #     run: |
+    #       forge test -vvv --zksync
+    #     id: test

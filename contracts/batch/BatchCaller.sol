@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {SystemContractsCaller} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractsCaller.sol';
-import {EfficientCall} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol';
-import { DEPLOYER_SYSTEM_CONTRACT } from "@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol";
+import {SystemContractsCaller} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/SystemContractsCaller.sol';
+import {EfficientCall} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/EfficientCall.sol';
+import { DEPLOYER_SYSTEM_CONTRACT } from "@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol";
 import {Errors} from '../libraries/Errors.sol';
 import {SelfAuth} from '../auth/SelfAuth.sol';
 // Each call data for batches

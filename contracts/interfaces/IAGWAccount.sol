@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {IAccount} from '@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IAccount.sol';
+import {IAccount} from '@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IAccount.sol';
 
 import {IERC1271} from '@openzeppelin/contracts/interfaces/IERC1271.sol';
 import {IERC777Recipient} from '@openzeppelin/contracts/interfaces/IERC777Recipient.sol';

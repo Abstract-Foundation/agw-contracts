@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {EfficientCall} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol';
+import {EfficientCall} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/EfficientCall.sol';
 
 contract AccountProxy {
     event Upgraded(address indexed implementation);

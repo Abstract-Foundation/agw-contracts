@@ -1,0 +1,20 @@
+[profile.default]
+src = "contracts"
+test = "test"
+script = "script"
+out = "out"
+libs = ["node_modules"]
+remappings = [
+    "@chainlink/=node_modules/@chainlink/",
+    "@eth-optimism/=node_modules/@chainlink/contracts/node_modules/@eth-optimism/",
+    "@matterlabs/=node_modules/@matterlabs/",
+    "@nomad-xyz/=node_modules/@nomad-xyz/",
+    "@openzeppelin/=node_modules/@openzeppelin/",
+    "@redstone-finance/=node_modules/@redstone-finance/",
+    "hardhat/=node_modules/hardhat/",
+]
+solc = "0.8.26"
+
+[profile.default.zksync]
+enable_eravm_extensions = true
+zksolc = "1.5.6"

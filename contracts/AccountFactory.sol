@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {DEPLOYER_SYSTEM_CONTRACT, IContractDeployer} from '@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol';
-import {SystemContractsCaller} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractsCaller.sol';
+import {DEPLOYER_SYSTEM_CONTRACT, IContractDeployer} from '@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol';
+import {SystemContractsCaller} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/SystemContractsCaller.sol';
 import {Ownable, Ownable2Step} from '@openzeppelin/contracts/access/Ownable2Step.sol';
-import {EfficientCall} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol';
+import {EfficientCall} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/EfficientCall.sol';
 import {Errors} from './libraries/Errors.sol';
 import {IAGWRegistry} from './interfaces/IAGWRegistry.sol';
 

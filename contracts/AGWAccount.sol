@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.17;
 
-import {IAccount, ACCOUNT_VALIDATION_SUCCESS_MAGIC} from '@matterlabs/zksync-contracts/l2/system-contracts/interfaces/IAccount.sol';
-import {Transaction, TransactionHelper} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/TransactionHelper.sol';
-import {EfficientCall} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol';
-import {BOOTLOADER_FORMAL_ADDRESS, NONCE_HOLDER_SYSTEM_CONTRACT, DEPLOYER_SYSTEM_CONTRACT, INonceHolder} from '@matterlabs/zksync-contracts/l2/system-contracts/Constants.sol';
-import {SystemContractsCaller} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractsCaller.sol';
-import {SystemContractHelper} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/SystemContractHelper.sol';
-import {Utils} from '@matterlabs/zksync-contracts/l2/system-contracts/libraries/Utils.sol';
+import {IAccount, ACCOUNT_VALIDATION_SUCCESS_MAGIC} from '@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IAccount.sol';
+import {Transaction, TransactionHelper} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol';
+import {EfficientCall} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/EfficientCall.sol';
+import {BOOTLOADER_FORMAL_ADDRESS, NONCE_HOLDER_SYSTEM_CONTRACT, DEPLOYER_SYSTEM_CONTRACT, INonceHolder} from '@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol';
+import {SystemContractsCaller} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/SystemContractsCaller.sol';
+import {SystemContractHelper} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/SystemContractHelper.sol';
+import {Utils} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/Utils.sol';
 import {Initializable} from '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 
 import {HookManager} from './managers/HookManager.sol';
