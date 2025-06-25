@@ -7,6 +7,7 @@
     "@nomad-xyz/excessively-safe-call": "github:nomad-xyz/ExcessivelySafeCall",
     "@openzeppelin/contracts": "5.1.0",
     "@openzeppelin/contracts-upgradeable": "5.1.0",
+    "solady": "^0.1.21",
     "ts-morph": "^19.0.0"
   },
   "devDependencies": {
