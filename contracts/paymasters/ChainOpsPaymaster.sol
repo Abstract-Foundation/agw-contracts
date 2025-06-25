@@ -7,7 +7,7 @@ import {
     ExecutionResult,
     PAYMASTER_VALIDATION_SUCCESS_MAGIC
 } from "@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymaster.sol";
-import {AccountFactory} from "../AccountFactory.sol";
+import {IAccountFactory} from "../interfaces/IAccountFactory.sol";
 import {BOOTLOADER_FORMAL_ADDRESS} from "@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol";
 import {OwnableRoles} from "solady/src/auth/OwnableRoles.sol";
 import {SafeTransferLib} from "solady/src/utils/ext/zksync/SafeTransferLib.sol";
@@ -22,14 +22,14 @@ contract ChainOpsPaymaster is OwnableRoles, IPaymaster {
 
     uint256 public constant MANAGER_ROLE = _ROLE_0;
 
-    AccountFactory public immutable AA_FACTORY;
+    IAccountFactory public immutable AA_FACTORY;
     address private immutable _deployer;
 
     mapping(address from => bool sponsored) public sponsoredAccounts;
     mapping(address from => mapping(address to => mapping(bytes4 selector => bool sponsored))) public sponsoredCalls;
 
     constructor(address owner, address aaFactory) {
-        AA_FACTORY = AccountFactory(aaFactory);
+        AA_FACTORY = IAccountFactory(aaFactory);
         _initializeOwner(owner);
         _grantRoles(owner, MANAGER_ROLE);
     }
@@ -54,8 +54,8 @@ contract ChainOpsPaymaster is OwnableRoles, IPaymaster {
         }
 
         if (to == address(AA_FACTORY)) {
-            if (selector == AccountFactory.deployAccount.selector) {
-                if (AccountFactory(AA_FACTORY).authorizedDeployers(from)) {
+            if (selector == IAccountFactory.deployAccount.selector) {
+                if (AA_FACTORY.authorizedDeployers(from)) {
                     shouldSponsor = true;
                 }
             }

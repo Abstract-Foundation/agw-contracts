@@ -7,6 +7,7 @@ import {Ownable, Ownable2Step} from '@openzeppelin/contracts/access/Ownable2Step
 import {EfficientCall} from '@matterlabs/zksync-contracts/contracts/system-contracts/libraries/EfficientCall.sol';
 import {Errors} from './libraries/Errors.sol';
 import {IAGWRegistry} from './interfaces/IAGWRegistry.sol';
+import {IAccountFactory} from './interfaces/IAccountFactory.sol';
 
 /**
  * @title Factory contract to create AGW accounts
@@ -14,7 +15,7 @@ import {IAGWRegistry} from './interfaces/IAGWRegistry.sol';
  * @author https://abs.xyz
  * @author https://getclave.io
  */
-contract AccountFactory is Ownable2Step {
+contract AccountFactory is Ownable2Step, IAccountFactory {
     
     /**
      * @notice Address of the account implementation
