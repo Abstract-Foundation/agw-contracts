@@ -32,4 +32,6 @@ PRIVATE_KEY=123cde574ccff....
 
 -   [Website](https://abs.xyz/)
 -   [GitHub](https://github.com/Abstract-Foundation)
--   [Twitter](https://twitter.com/AbstractChain)
+-   [X/Twitter](https://x.com/AbstractChain)
+-   [Discord](https://discord.com/invite/abstractchain)
+-   [YouTube](https://www.youtube.com/@AbstractBlockchain)
