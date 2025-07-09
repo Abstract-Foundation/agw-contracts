@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "abs.xyz",
   "dependencies": {
-    "@matterlabs/zksync-contracts": "1.0.0-alpha.9",
+    "@matterlabs/zksync-contracts": "28.0.1",
     "@nomad-xyz/excessively-safe-call": "github:nomad-xyz/ExcessivelySafeCall",
     "@openzeppelin/contracts": "5.1.0",
     "@openzeppelin/contracts-upgradeable": "5.1.0",
@@ -39,6 +39,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "npx hardhat compile",
+    "compile:foundry": "forge build --zksync",
     "deploy:mvp": "npx hardhat deploy-zksync --script deploy-mvp.ts",
     "lint": "npx prettier --write --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "lint-check": "npx prettier --list-different --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
