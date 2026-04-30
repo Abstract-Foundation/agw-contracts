@@ -52,6 +52,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Foundry dependencies
+lib/
+
 # TypeScript v1 declaration files
 typings/
 
