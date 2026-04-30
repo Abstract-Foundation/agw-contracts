@@ -17,6 +17,8 @@ solc = "0.8.26"
 via_ir = true
 optimizer = true
 
+[profile.ci]
+
 [profile.default.zksync]
 enable_eravm_extensions = true
 zksolc = "1.5.6"
