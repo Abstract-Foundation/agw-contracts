@@ -20,6 +20,7 @@ import { addK1Validator } from '../../utils/managers/validatormanager';
 import { VALIDATORS } from '../../utils/names';
 import {
     ethTransfer,
+    expectEip712TxToFail,
     prepareEOATx,
     prepareMockTx,
 } from '../../utils/transactions';
@@ -164,13 +165,7 @@ describe('AGW Contracts - EOA Validator tests', () => {
                         await newK1Validator.getAddress(),
                     );
 
-                    try {
-                        const txReceipt = await provider.broadcastTransaction(
-                            utils.serializeEip712(tx),
-                        );
-                        await txReceipt.wait();
-                        assert(false);
-                    } catch (err) {}
+                    await expectEip712TxToFail(provider, tx);
 
                     const richBalanceAfter = await provider.getBalance(
                         richAddress,

@@ -17,6 +17,7 @@ import { fixture } from '../../utils/fixture';
 import { VALIDATORS } from '../../utils/names';
 import {
     ethTransfer,
+    expectEip712TxToFail,
     prepareMockTx,
     prepareTeeTx,
 } from '../../utils/transactions';
@@ -151,13 +152,7 @@ describe('AGW Contracts - TEE Validator tests', () => {
                         await teeValidator.getAddress(),
                     );
 
-                    try {
-                        const txReceipt = await provider.broadcastTransaction(
-                            utils.serializeEip712(tx),
-                        );
-                        await txReceipt.wait();
-                        assert(false);
-                    } catch (err) {}
+                    await expectEip712TxToFail(provider, tx);
 
                     const richBalanceAfter = await provider.getBalance(
                         richAddress,

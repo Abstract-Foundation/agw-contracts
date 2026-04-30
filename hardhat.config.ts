@@ -4,7 +4,6 @@
  * Proprietary and confidential
  */
 import '@matterlabs/hardhat-zksync';
-import "@matterlabs/hardhat-zksync-verify";
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@typechain/hardhat';
@@ -69,7 +68,7 @@ const abstractMainnet: NetworkUserConfig = {
 
 const config: HardhatUserConfig = {
     zksyncAnvil: {
-        version: "0.6.5",
+        version: "0.6.11",
     },
     zksolc: {
         version: '1.5.6',

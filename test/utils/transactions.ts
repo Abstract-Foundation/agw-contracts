@@ -101,6 +101,44 @@ export async function prepareMockBatchTx(
     return tx;
 }
 
+export async function expectEip712TxToFail(
+    provider: Provider,
+    tx: types.TransactionLike,
+    timeoutMs = 3_000,
+): Promise<void> {
+    try {
+        await provider.estimateGas(tx);
+    } catch {
+        return;
+    }
+
+    let response;
+    try {
+        response = await provider.broadcastTransaction(
+            utils.serializeEip712(tx),
+        );
+    } catch {
+        return;
+    }
+
+    // Newer anvil-zksync builds can accept invalid AA txs and then never mine
+    // them. Polling the receipt avoids TransactionResponse.wait() hanging.
+    const deadline = Date.now() + timeoutMs;
+    while (Date.now() < deadline) {
+        const receipt = await provider.getTransactionReceipt(response.hash);
+
+        if (receipt !== null) {
+            if (receipt.status === 0) {
+                return;
+            }
+
+            throw new Error('Expected EIP-712 transaction to fail');
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+}
+
 export async function prepareTeeTx(
     provider: Provider,
     account: Contract,

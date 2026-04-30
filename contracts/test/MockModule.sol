@@ -22,12 +22,12 @@ contract MockModule is IModule {
         delete values[msg.sender];
     }
 
-    function testExecuteFromModule(address account, address to) external {
+    function mockExecuteFromModule(address account, address to) external {
         uint256 value = values[account];
         IAGWAccount(account).executeFromModule(to, value, '');
     }
 
-    function testOnlySelfOrModule(address account) external {
+    function mockOnlySelfOrModule(address account) external {
         IAGWAccount(account).k1AddOwner(address(this));
     }
 

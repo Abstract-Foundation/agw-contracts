@@ -3,7 +3,7 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import type { ec } from 'elliptic';
 import * as hre from 'hardhat';
 import type { Contract, Wallet } from 'zksync-ethers';
@@ -15,6 +15,10 @@ import { fixture } from '../../utils/fixture';
 import { upgradeTx } from '../../utils/managers/upgrademanager';
 import { VALIDATORS } from '../../utils/names';
 import { HDNodeWallet } from 'ethers';
+import {
+    expectEip712TxToFail,
+    prepareEOATx,
+} from '../../utils/transactions';
 
 describe('AGW Contracts - Upgrade Manager tests', () => {
     let deployer: ClaveDeployer;
@@ -80,16 +84,19 @@ describe('AGW Contracts - Upgrade Manager tests', () => {
                 await mockImplementation.getAddress(),
             );
 
-            try {
-                await upgradeTx(
-                    provider,
-                    account,
-                    eoaValidator,
-                    mockImplementation,
-                    wallet,
+            const upgradeTransaction =
+                await account.upgradeTo.populateTransaction(
+                    await mockImplementation.getAddress(),
                 );
-                assert(false, 'Should revert');
-            } catch (err) {}
+            const tx = await prepareEOATx(
+                provider,
+                account,
+                upgradeTransaction,
+                await eoaValidator.getAddress(),
+                wallet,
+            );
+
+            await expectEip712TxToFail(provider, tx);
         });
     });
 });

@@ -3,7 +3,7 @@
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  */
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import type { ec } from 'elliptic';
 import { AbiCoder, HDNodeWallet } from 'ethers';
 import * as hre from 'hardhat';
@@ -20,9 +20,12 @@ import {
     executeRecovery,
     startCloudRecovery,
     stopRecovery,
-    updateCloudGuardian,
 } from '../../utils/recovery/recovery';
 import { addR1Validator } from '../../utils/managers/validatormanager';
+import {
+    expectEip712TxToFail,
+    prepareEOATx,
+} from '../../utils/transactions';
 
 describe('AGW Contracts - Cloud Recovery tests', () => {
     let deployer: ClaveDeployer;
@@ -226,17 +229,19 @@ describe('AGW Contracts - Cloud Recovery tests', () => {
                     provider,
                 );
 
-                try {
-                    await updateCloudGuardian(
-                        provider,
-                        account,
-                        cloudRecoveryModule,
-                        eoaValidator,
+                const updateGuardianTx =
+                    await cloudRecoveryModule.updateGuardian.populateTransaction(
                         await newGuardianAddress.getAddress(),
-                        wallet,
                     );
-                    assert(false, 'Should revert');
-                } catch (err) {}
+                const tx = await prepareEOATx(
+                    provider,
+                    account,
+                    updateGuardianTx,
+                    await eoaValidator.getAddress(),
+                    wallet,
+                );
+
+                await expectEip712TxToFail(provider, tx);
 
                 expect(
                     await cloudRecoveryModule.isRecovering(

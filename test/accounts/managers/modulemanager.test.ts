@@ -87,7 +87,7 @@ describe('AGW Contracts - Module Manager tests', () => {
                     await richWallet.getAddress(),
                 );
 
-                await mockModule.testExecuteFromModule(
+                await mockModule.mockExecuteFromModule(
                     await account.getAddress(),
                     await richWallet.getAddress(),
                 );

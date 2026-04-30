@@ -17,6 +17,7 @@ import { fixture } from '../../utils/fixture';
 import { VALIDATORS } from '../../utils/names';
 import {
     ethTransfer,
+    expectEip712TxToFail,
     prepareMockTx,
     preparePasskeyTx,
 } from '../../utils/transactions';
@@ -154,13 +155,7 @@ describe('AGW Contracts - Passkey Validator tests', () => {
                         await passkeyValidator.getAddress(),
                     );
 
-                    try {
-                        const txReceipt = await provider.broadcastTransaction(
-                            utils.serializeEip712(tx),
-                        );
-                        await txReceipt.wait();
-                        assert(false);
-                    } catch (err) {}
+                    await expectEip712TxToFail(provider, tx);
 
                     const richBalanceAfter = await provider.getBalance(
                         richAddress,

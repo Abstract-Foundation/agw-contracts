@@ -4,8 +4,6 @@
  * Proprietary and confidential
  */
 import { Deployer } from '@matterlabs/hardhat-zksync';
-import '@matterlabs/hardhat-zksync-node/dist/type-extensions';
-import '@matterlabs/hardhat-zksync-verify/dist/src/type-extensions';
 import { AbiCoder, ZeroHash, Contract, ethers } from 'ethers';
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Provider, Wallet, utils } from 'zksync-ethers';
