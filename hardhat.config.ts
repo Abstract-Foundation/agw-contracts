@@ -4,7 +4,6 @@
  * Proprietary and confidential
  */
 import '@matterlabs/hardhat-zksync';
-import "@matterlabs/hardhat-zksync-verify";
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@typechain/hardhat';
