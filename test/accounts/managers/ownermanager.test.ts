@@ -23,7 +23,12 @@ import {
 } from '../../utils/managers/ownermanager';
 import { VALIDATORS } from '../../utils/names';
 import { encodePublicKey, genKey } from '../../utils/p256';
-import { ethTransfer, prepareEOATx, prepareTeeTx } from '../../utils/transactions';
+import {
+    ethTransfer,
+    expectEip712TxToFail,
+    prepareEOATx,
+    prepareTeeTx,
+} from '../../utils/transactions';
 import { addR1Validator } from '../../utils/managers/validatormanager';
 
 describe('AGW Contracts - Owner Manager tests', () => {
@@ -152,9 +157,12 @@ describe('AGW Contracts - Owner Manager tests', () => {
                     await teeValidator.getAddress(),
                     newKeyPair,
                 );
-                await expect(
-                    provider.broadcastTransaction(utils.serializeEip712(tx)),
-                ).to.be.reverted;
+                await expectEip712TxToFail(provider, tx);
+
+                const richBalanceAfter = await provider.getBalance(
+                    richAddress,
+                );
+                expect(richBalanceAfter).to.eq(richBalanceBefore);
             });
         });
 
@@ -399,17 +407,18 @@ describe('AGW Contracts - Owner Manager tests', () => {
 
                 const invalidPubkey = '0x' + 'C'.repeat(invalidLength);
 
-                try {
-                    await removeR1Key(
-                        provider,
-                        account,
-                        teeValidator,
-                        invalidPubkey,
-                        wallet,
-                        replacedKeyPair,
-                    );
-                    assert(false, 'Should revert');
-                } catch (err) {}
+                const resetOwnersTx = await account.resetOwners.populateTransaction(
+                    invalidPubkey,
+                );
+                const tx = await prepareTeeTx(
+                    provider,
+                    account,
+                    resetOwnersTx,
+                    await teeValidator.getAddress(),
+                    replacedKeyPair,
+                );
+
+                await expectEip712TxToFail(provider, tx);
             });
         });
     });
