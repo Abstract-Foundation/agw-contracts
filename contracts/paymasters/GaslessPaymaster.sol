@@ -53,6 +53,7 @@ contract GaslessPaymaster is IPaymaster, Ownable, BootloaderAuth {
     ) external payable onlyBootloader returns (bytes4 magic, bytes memory context) {
         // By default we consider the transaction as accepted.
         magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
+        context = "";
 
         // Revert if standart paymaster input is shorter than 4 bytes
         if (_transaction.paymasterInput.length < 4) revert Errors.SHORT_PAYMASTER_INPUT();

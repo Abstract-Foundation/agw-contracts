@@ -31,7 +31,7 @@ contract MockModule is IModule {
         IAGWAccount(account).k1AddOwner(address(this));
     }
 
-    function isInited(address account) external view returns (bool) {
+    function isInited(address) external pure returns (bool) {
         return true;
     }
 
