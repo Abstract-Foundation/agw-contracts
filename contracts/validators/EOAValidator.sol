@@ -13,7 +13,7 @@ contract EOAValidator is IK1Validator {
 
     /// @inheritdoc IK1Validator
     function validateSignature(
-        OperationType operationType,
+        OperationType,
         bytes32 signedHash,
         bytes calldata signature
     ) external pure override returns (address signer) {
