@@ -40,7 +40,7 @@ contract MockValidationHook is IValidationHook {
         return IAGWAccount(account).getHookData(hook, key);
     }
 
-    function isInited(address account) external view returns (bool) {
+    function isInited(address) external pure returns (bool) {
         return true;
     }
 
@@ -81,7 +81,7 @@ contract MockExecutionHook is IExecutionHook {
         return IAGWAccount(account).getHookData(hook, key);
     }
 
-    function isInited(address account) external view returns (bool) {
+    function isInited(address) external pure returns (bool) {
         return true;
     }
 
