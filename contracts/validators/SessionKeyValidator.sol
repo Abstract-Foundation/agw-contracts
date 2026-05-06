@@ -45,7 +45,7 @@ contract SessionKeyValidator is IValidationHook, IModuleValidator, IModule {
     return status;
   }
 
-  function handleValidation(OperationType operationType, bytes32 signedHash, bytes memory signature) external view returns (bool) {
+  function handleValidation(OperationType operationType, bytes32 signedHash, bytes memory) external view returns (bool) {
     if (operationType != OperationType.Transaction) {
       return false;
     }

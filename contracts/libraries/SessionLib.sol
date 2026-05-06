@@ -276,6 +276,7 @@ library SessionLib {
       uint64 period = uint64(block.timestamp / limit.period);
       return limit.limit - tracker.allowanceUsage[period][account];
     }
+    return 0;
   }
 
   function getState(

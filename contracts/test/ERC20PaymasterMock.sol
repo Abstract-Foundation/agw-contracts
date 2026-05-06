@@ -216,7 +216,7 @@ contract ERC20PaymasterMock is
      */
     function callOracle(
         bytes memory //* oracleCalldata */
-    ) external view returns (uint256) {
+    ) external pure returns (uint256) {
         // return getOracleNumericValueFromTxMsg(bytes32('ETH'));
         return 1500 * ORACLE_NOMINATOR;
     }
